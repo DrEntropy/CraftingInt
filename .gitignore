@@ -1,2 +1,6 @@
-
+tlox/Build/
 *.un~
+.gitignore~
+
+
+*.xcuserstate
