@@ -11,10 +11,27 @@
 #include <fstream>
 #include "Scanner.h"
 
+// All of this crap should be in an error reporting class
+
+bool hadError = false;
+
+
+void report(int line, std::string where, std::string message)
+{
+    std::cerr << "[Line: " + std::to_string(line) + "] Error" + where + ": " + message << std::endl;
+}
+
+void error(int line, std::string message)
+{
+    report(line, "", message);
+    hadError = true;
+}
+
+// end poor error reporting ;)
+
 void run(std::string source)
 {
-    // temp
-    Scanner scanner{source};
+    Scanner scanner{source, error};
     //std::cout << source << "\n";
 }
 
@@ -29,10 +46,15 @@ void runFile(std::string filename)
         std::stringstream buffer;
         buffer << t.rdbuf();
         run(buffer.str());
+        if(hadError)
+        {
+            exit(EXIT_FAILURE);
+        }
     }
     else
     {
         std::cout << "Failed to open \n";
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -47,6 +69,7 @@ void runPrompt()
         if(std::cin.eof())
             break;
         run(line);
+        hadError = false; // keep going even if there was an error
     }
     
 }
@@ -57,13 +80,14 @@ void runPrompt()
 
 int main(int argc, const char * argv[])
 {
+    // main
     if(argc > 2)
         std::cout << "usage:tlox [script]\n";
     else if (argc == 2)
         runFile(std::string(argv[1]));
     else
         runPrompt();
-    return 0;
+    return EXIT_SUCCESS;
 }
 
  
