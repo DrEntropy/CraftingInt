@@ -32,7 +32,12 @@ void error(int line, std::string message)
 void run(std::string source)
 {
     Scanner scanner{source, error};
-    //std::cout << source << "\n";
+    std::vector<Token> tokens = scanner.scanTokens();
+
+    // For now, just print the tokens.
+    for (Token token : tokens) {
+      std::cout << token.toString() << "\n";
+    }
 }
 
 

@@ -46,9 +46,28 @@ std::map<TokenType, std::string> tokenStrings {
     {TokenType::THIS, "THIS"}, {TokenType::TRUE_T, "TRUE_T"},
     {TokenType::VAR, "VAR"}, {TokenType::WHILE, "WHILE"},
     {TokenType::EOF_T, "EOF_T"}
-    
-    
-    
+};
+
+
+// keywords . i realize this is redundant , fix later.
+
+std::map<std::string, TokenType> keywords {
+    {"and",    TokenType::AND},
+    {"class",  TokenType::CLASS},
+    {"else",   TokenType::ELSE},
+    {"false",  TokenType::FALSE_T},
+    {"for",    TokenType::FOR},
+    {"fun",    TokenType::FUN},
+    {"if",     TokenType::IF},
+    {"nil",    TokenType::NIL},
+    {"or",     TokenType::OR},
+    {"print",  TokenType::PRINT},
+    {"return", TokenType::RETURN},
+    {"super",  TokenType::SUPER},
+    {"this",   TokenType::THIS},
+    {"true",   TokenType::TRUE_T},
+    {"var",    TokenType::VAR},
+    {"while",  TokenType::WHILE}
 };
 
 using Literal = std::variant<std::monostate, double, std::string>;
@@ -59,7 +78,7 @@ struct Literal_to_string_vis
 {
     std::string operator()(std::monostate)
     {
-        return "NOT_LITERAL"; // should never happen.
+        return "";  
     }
     
     std::string operator()(std::string astring) {

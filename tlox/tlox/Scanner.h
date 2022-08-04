@@ -89,6 +89,8 @@ private:
             default:
                 if(std::isdigit(c))
                     number();
+                else if(isAlpha(c))
+                    identifier();
                 else
                     errorCallback(line, "Unexpected Character.");
                 break;
@@ -150,7 +152,7 @@ private:
         advance();
 
         // Trim the surrounding quotes.
-        std::string value = source.substr(start + 1, current - start - 1);
+        std::string value = source.substr(start + 1, current - start - 2);
         addToken(TokenType::STRING, value);
         
     }
@@ -171,11 +173,43 @@ private:
             std::stod(source.substr(start, current-start)));
     }
     
+    void identifier()
+    {
+          while (isAlphaNumeric(peek())) advance();
+        
+          std::string text = source.substr(start, current-start);
+          TokenType type;
+          try
+          {
+             type = keywords.at(text);
+          }
+          catch (const std::out_of_range&)
+          {
+            type = TokenType::IDENTIFIER;
+          }
+     
+          addToken(type);
+ 
+    }
+    
     bool isAtEnd()
     {
         return current >= source.length();
     }
     
+// just to make sure i know what is what, i know c++ defines these but ..
+    bool isAlpha(char c) {
+      return (c >= 'a' && c <= 'z') ||
+             (c >= 'A' && c <= 'Z') ||
+              c == '_';
+    }
+
+    bool isAlphaNumeric(char c) {
+      return isAlpha(c) || std::isdigit(c);
+    }
+    
+    
+// member vars
     std::string& source;
     std::function<void(int, std::string)> errorCallback;
     std::vector<Token> tokens;
