@@ -28,30 +28,30 @@ public:
 class Binary : public Expr
 {
 public:
-    Binary(Expr& left, Token& op, Expr& right):left{left},op{op},right{right}{};
+    Binary(Expr left, Token op, Expr right):left{left},op{op},right{right}{};
 
    void accept(Visitor& v) override
     {
         return v.visit(*this);
     }
 
-    Expr& left;
-    Token& op;
-    Expr& right;
+    Expr left;
+    Token op;
+    Expr right;
 
 };
 
 class Grouping : public Expr
 {
 public:
-    Grouping(Expr& expression):expression{expression}{};
+    Grouping(Expr expression):expression{expression}{};
 
    void accept(Visitor& v) override
     {
         return v.visit(*this);
     }
 
-    Expr& expression;
+    Expr expression;
 
 };
 
@@ -72,15 +72,15 @@ public:
 class Unary : public Expr
 {
 public:
-    Unary(Token& op, Expr& right):op{op},right{right}{};
+    Unary(Token op, Expr right):op{op},right{right}{};
 
    void accept(Visitor& v) override
     {
         return v.visit(*this);
     }
 
-    Token& op;
-    Expr& right;
+    Token op;
+    Expr right;
 
 };
 

@@ -65,8 +65,8 @@ parser.add_argument('--dest', help='output directory, defaults to .' , default='
 
 args = parser.parse_args()
 
-defineAst(args.dest, "Expr", ["Binary : Expr& left, Token& op, Expr& right",
-                              "Grouping : Expr& expression",
+defineAst(args.dest, "Expr", ["Binary : Expr left, Token op, Expr right",
+                              "Grouping : Expr expression",
                               "Literal  : Value value",
-                               "Unary   : Token& op, Expr& right"
+                               "Unary   : Token op, Expr right"
                               ])
