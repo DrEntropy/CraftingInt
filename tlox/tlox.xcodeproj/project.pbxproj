@@ -23,8 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		7012E4C628AC55AB005D3439 /* Expression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Expression.h; sourceTree = "<group>"; };
-		7012E4C728AC5E31005D3439 /* Visitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Visitor.h; sourceTree = "<group>"; };
+		7012E4C628AC55AB005D3439 /* Expr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Expr.h; sourceTree = "<group>"; };
 		70319A2928838AFF009CB227 /* tlox */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlox; sourceTree = BUILT_PRODUCTS_DIR; };
 		70319A2C28838AFF009CB227 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		70D73404288F407800725BFD /* Scanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
@@ -64,8 +63,7 @@
 				70319A2C28838AFF009CB227 /* main.cpp */,
 				70D73404288F407800725BFD /* Scanner.h */,
 				70D73405288F410B00725BFD /* Token.h */,
-				7012E4C628AC55AB005D3439 /* Expression.h */,
-				7012E4C728AC5E31005D3439 /* Visitor.h */,
+				7012E4C628AC55AB005D3439 /* Expr.h */,
 			);
 			path = tlox;
 			sourceTree = "<group>";
