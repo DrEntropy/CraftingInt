@@ -20,22 +20,32 @@ def genVisitor(classDesc):
     res += "};\n\n"
     return res
 
+def processField(field):
+    (type, name) = field.split()
+    if type[-1] == "*":
+        type = f"std::unique_ptr<{type[:-1]}>"
+        initializer = f"{name}{{std::move({name})}}"
+    else:
+        initializer = f"{name}{{{name}}}"
+    return (type, name, initializer)
 
-def genConstructor(className, fields, fieldlist):
-    justnames = [field.split()[1] for field in fields]
-    assignments = ','.join([field+"{"+field+"}" for field in justnames])
+
+def genConstructor(className, fields):
+    assignments = ', '.join([field[2] for field in fields]) # grab initializers
+    fieldlist = ', '.join([field[0]+" "+field[1] for field in fields]) # grab types
     return indent4 + f"{className}({fieldlist}):" + assignments + "{};\n"
     
 
 def genFields(fields):
     res = ""
     for field in fields:
-        res += indent4+ field + ";\n"
+        res += indent4+ field[0] + " " + field[1] + ";\n"
     return res
 
 def defineType(baseName,className, fieldlist):
-    fields = [f.strip() for f in fieldlist.split(',')]
-    boilerplate = f"\nclass {className} : public {baseName}\n" + "{\npublic:\n" + genConstructor(className,fields, fieldlist) +  visitString 
+    fields = [processField(f.strip()) for f in fieldlist.split(',')]
+    # is a list of (type, name, initializer)
+    boilerplate = f"\nclass {className} : public {baseName}\n" + "{\npublic:\n" + genConstructor(className,fields) +  visitString 
     return boilerplate + "\n"+ genFields(fields) + "\n};\n"
 
 
@@ -65,8 +75,10 @@ parser.add_argument('--dest', help='output directory, defaults to .' , default='
 
 args = parser.parse_args()
 
-defineAst(args.dest, "Expr", ["Binary : Expr left, Token op, Expr right",
-                              "Grouping : Expr expression",
+# 
+
+defineAst(args.dest, "Expr", ["Binary : Expr* left, Token op, Expr* right",
+                              "Grouping : Expr* expression",
                               "Literal  : Value value",
-                               "Unary   : Token op, Expr right"
+                               "Unary   : Token op, Expr* right"
                               ])

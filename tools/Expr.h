@@ -28,30 +28,30 @@ public:
 class Binary : public Expr
 {
 public:
-    Binary(Expr left, Token op, Expr right):left{left},op{op},right{right}{};
+    Binary(std::unique_ptr<Expr> left, Token op, std::unique_ptr<Expr> right):left{std::move(left)}, op{op}, right{std::move(right)}{};
 
    void accept(Visitor& v) override
     {
         return v.visit(*this);
     }
 
-    Expr left;
+    std::unique_ptr<Expr> left;
     Token op;
-    Expr right;
+    std::unique_ptr<Expr> right;
 
 };
 
 class Grouping : public Expr
 {
 public:
-    Grouping(Expr expression):expression{expression}{};
+    Grouping(std::unique_ptr<Expr> expression):expression{std::move(expression)}{};
 
    void accept(Visitor& v) override
     {
         return v.visit(*this);
     }
 
-    Expr expression;
+    std::unique_ptr<Expr> expression;
 
 };
 
@@ -72,7 +72,7 @@ public:
 class Unary : public Expr
 {
 public:
-    Unary(Token op, Expr right):op{op},right{right}{};
+    Unary(Token op, std::unique_ptr<Expr> right):op{op}, right{std::move(right)}{};
 
    void accept(Visitor& v) override
     {
@@ -80,7 +80,7 @@ public:
     }
 
     Token op;
-    Expr right;
+    std::unique_ptr<Expr> right;
 
 };
 

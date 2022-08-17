@@ -11,6 +11,7 @@
 #include <fstream>
 #include "Scanner.h"
 #include "Expr.h"
+#include "AstPrint.h"
 
 
 // All of this crap should be in an error reporting class
@@ -87,6 +88,18 @@ void runPrompt()
 
 int main(int argc, const char * argv[])
 {
+    // TEST CODE  DELETE
+    std::unique_ptr<Expr> expr(new Binary(std::make_unique<Unary>(Token(TokenType::MINUS,"-",Value(),1 ),
+                                       std::make_unique<Literal>(Value(123.0))),Token(TokenType::STAR, "*", Value(), 1),
+                                       std::make_unique<Grouping>(  std::make_unique<Literal>(Value(45.67)))));
+  //  std::unique_ptr<Expr> expr(new Grouping(std::make_unique<Literal>(Value(45.67))));
+    AstPrint printer;
+    expr->accept(printer);
+    std::cout << printer.toString() << "\n";
+    return EXIT_SUCCESS;
+    
+ // END TEST CODE
+    
     // main
     if(argc > 2)
         std::cout << "usage:tlox [script]\n";
