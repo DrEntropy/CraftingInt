@@ -23,10 +23,8 @@ def genVisitor(classDesc):
 def processField(field):
     (type, name) = field.split()
     if type[-1] == "*":
-        type = f"std::unique_ptr<{type[:-1]}>"
-        initializer = f"{name}{{std::move({name})}}"
-    else:
-        initializer = f"{name}{{{name}}}"
+        type = f"std::shared_ptr<{type[:-1]}>"
+    initializer = f"{name}{{{name}}}"
     return (type, name, initializer)
 
 
