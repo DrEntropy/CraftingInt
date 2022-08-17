@@ -70,7 +70,7 @@ std::map<std::string, TokenType> keywords {
     {"while",  TokenType::WHILE}
 };
 
-using Literal = std::variant<std::monostate, double, std::string>;
+using Value = std::variant<std::monostate, double, std::string>;
 
 
 // Visitor for literal variant. If too much of this refactor
@@ -94,7 +94,7 @@ struct Literal_to_string_vis
 class Token
 {
 public:
-    Token(TokenType type, std::string lexeme, Literal literal, int line):
+    Token(TokenType type, std::string lexeme, Value literal, int line):
     type{type}, lexeme{lexeme}, literal{literal}, line {line} {}
     
     std::string toString()
@@ -107,7 +107,7 @@ private:
     int line;
     TokenType type;
     std::string lexeme;
-    Literal literal;
+    Value literal;
 };
 
 #endif /* Token_h */

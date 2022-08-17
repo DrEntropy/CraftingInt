@@ -10,6 +10,7 @@
 #include <sstream>
 #include <fstream>
 #include "Scanner.h"
+#include "Expression.h"
 
 // All of this crap should be in an error reporting class
 
