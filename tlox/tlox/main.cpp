@@ -83,10 +83,7 @@ void runPrompt()
 }
 
 
-
-
-
-int main(int argc, const char * argv[])
+void testPrint()
 {
     // TEST CODE  DELETE
     std::unique_ptr<Expr> expr(new Binary(std::make_unique<Unary>(Token(TokenType::MINUS,"-",Value(),1 ),
@@ -96,6 +93,14 @@ int main(int argc, const char * argv[])
     AstPrint printer;
     expr->accept(printer);
     std::cout << printer.toString() << "\n";
+}
+
+
+
+int main(int argc, const char * argv[])
+{
+    // TEST CODE  DELETE
+    testPrint();
     return EXIT_SUCCESS;
     
  // END TEST CODE
