@@ -12,6 +12,7 @@
 #include "Scanner.h"
 #include "Expr.h"
 
+
 // All of this crap should be in an error reporting class
 
 bool hadError = false;
