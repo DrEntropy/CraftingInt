@@ -28,7 +28,7 @@ public:
 class Binary : public Expr
 {
 public:
-    Binary(std::unique_ptr<Expr> left, Token op, std::unique_ptr<Expr> right):left{std::move(left)}, op{op}, right{std::move(right)}{};
+    Binary(std::unique_ptr<Expr> left, Token op, std::unique_ptr<Expr> right):left{std::move(left)}, op{op}, right{std::move(right)}{}
 
    void accept(Visitor& v) override
     {
@@ -44,7 +44,7 @@ public:
 class Grouping : public Expr
 {
 public:
-    Grouping(std::unique_ptr<Expr> expression):expression{std::move(expression)}{};
+    Grouping(std::unique_ptr<Expr> expression):expression{std::move(expression)}{}
 
    void accept(Visitor& v) override
     {
@@ -58,7 +58,7 @@ public:
 class Literal : public Expr
 {
 public:
-    Literal(Value value):value{value}{};
+    Literal(Value value):value{value}{}
 
    void accept(Visitor& v) override
     {
@@ -72,7 +72,7 @@ public:
 class Unary : public Expr
 {
 public:
-    Unary(Token op, std::unique_ptr<Expr> right):op{op}, right{std::move(right)}{};
+    Unary(Token op, std::unique_ptr<Expr> right):op{op}, right{std::move(right)}{}
 
    void accept(Visitor& v) override
     {

@@ -33,13 +33,13 @@ def processField(field):
 def genConstructor(className, fields):
     assignments = ', '.join([field[2] for field in fields]) # grab initializers
     fieldlist = ', '.join([field[0]+" "+field[1] for field in fields]) # grab types
-    return indent4 + f"{className}({fieldlist}):" + assignments + "{};\n"
+    return indent4 + f"{className}({fieldlist}):" + assignments + "{}\n"
     
 
 def genFields(fields):
     res = ""
     for field in fields:
-        res += indent4+ field[0] + " " + field[1] + ";\n"
+        res += indent4+ field[0] + " " + field[1]+ ";\n"
     return res
 
 def defineType(baseName,className, fieldlist):
