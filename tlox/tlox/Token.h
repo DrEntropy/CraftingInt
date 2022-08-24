@@ -68,7 +68,6 @@ public:
     
     std::string lexeme;
     
-private:
     int line;
     TokenType type;
     
