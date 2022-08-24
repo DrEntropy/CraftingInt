@@ -12,6 +12,7 @@
 #include "Scanner.h"
 #include "Expr.h"
 #include "AstPrint.h"
+#include "Parser.h"
 
 
 // All of this crap should be in an error reporting class
@@ -30,16 +31,34 @@ void error(int line, std::string message)
     hadError = true;
 }
 
+void parse_error(Token token, std::string message) {
+    if (token.type == TokenType::EOF_T) {
+      report(token.line, " at end", message);
+    } else {
+      report(token.line, " at '" + token.lexeme + "'", message);
+    }
+  }
 // end poor error reporting ;)
 
 void run(std::string source)
 {
     Scanner scanner{source, error};
+    
     std::vector<Token> tokens = scanner.scanTokens();
-
+    Parser parser{tokens, parse_error};
+    if(hadError) return;
+    
+    
     // For now, just print the tokens.
-    for (Token token : tokens) {
-      std::cout << token.toString() << "\n";
+    // for (Token token : tokens) {
+   //   std::cout << token.toString() << "\n";
+   // }
+    std::shared_ptr<Expr> expr = parser.parse();
+    AstPrint printer;
+    if(expr)
+    {
+    expr->accept(printer);
+    std::cout << printer.toString() << "\n";
     }
 }
 
@@ -100,8 +119,8 @@ void testPrint()
 int main(int argc, const char * argv[])
 {
     // TEST CODE  DELETE
-    testPrint();
-    return EXIT_SUCCESS;
+   // testPrint();
+   // return EXIT_SUCCESS;
     
  // END TEST CODE
     

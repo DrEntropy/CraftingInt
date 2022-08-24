@@ -19,6 +19,8 @@ class Parser
 public:
     Parser(std::vector<Token> tokens, std::function<void(Token, std::string)> errorCallback):tokens{tokens}, errorCallback{errorCallback}{};
     
+    std::shared_ptr<Expr> parse();
+    
 private:
     
     std::shared_ptr<Expr> expression();
@@ -54,6 +56,8 @@ private:
     {
         return tokens.at(current-1);
     }
+    
+    Token consume(TokenType type, std::string message); 
     
     std::vector<Token> tokens;
     int current{0};

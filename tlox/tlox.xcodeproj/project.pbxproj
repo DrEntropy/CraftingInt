@@ -30,7 +30,7 @@
 		70319A2928838AFF009CB227 /* tlox */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlox; sourceTree = BUILT_PRODUCTS_DIR; };
 		70319A2C28838AFF009CB227 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		70C784A728B6C94200117F6E /* Parser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Parser.cpp; sourceTree = "<group>"; };
-		70C784A828B6C94200117F6E /* Parser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Parser.hpp; sourceTree = "<group>"; };
+		70C784AA28B6D8D200117F6E /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		70C8E04628AD45F900B35861 /* AstPrint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AstPrint.h; sourceTree = "<group>"; };
 		70C8E04928AD46BF00B35861 /* AstPrint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AstPrint.cpp; sourceTree = "<group>"; };
 		70D73404288F407800725BFD /* Scanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
@@ -68,6 +68,7 @@
 		70319A2B28838AFF009CB227 /* tlox */ = {
 			isa = PBXGroup;
 			children = (
+				70C784AA28B6D8D200117F6E /* Parser.h */,
 				70319A2C28838AFF009CB227 /* main.cpp */,
 				70D73404288F407800725BFD /* Scanner.h */,
 				70D73405288F410B00725BFD /* Token.h */,
@@ -76,7 +77,6 @@
 				70C8E04628AD45F900B35861 /* AstPrint.h */,
 				70C8E04928AD46BF00B35861 /* AstPrint.cpp */,
 				70C784A728B6C94200117F6E /* Parser.cpp */,
-				70C784A828B6C94200117F6E /* Parser.hpp */,
 			);
 			path = tlox;
 			sourceTree = "<group>";

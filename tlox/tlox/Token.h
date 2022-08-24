@@ -33,7 +33,8 @@ extern std::map<TokenType, std::string> tokenStrings;
 
 extern std::map<std::string, TokenType> keywords;
 
-using Value = std::variant<std::monostate, double, std::string>;
+// used for literal tokens and for Literal class to hold values.
+using Value = std::variant<std::monostate, double, std::string, bool>;
 
 
 // Visitor for literal variant. If too much of this refactor
@@ -49,6 +50,11 @@ struct Literal_to_string_vis
     }
     
     std::string operator()(double value)
+    {
+        return std::to_string(value);
+    }
+    
+    std::string operator()(bool value)
     {
         return std::to_string(value);
     }
