@@ -42,7 +42,7 @@ struct Literal_to_string_vis
 {
     std::string operator()(std::monostate)
     {
-        return "";  
+        return "NIL";
     }
     
     std::string operator()(std::string astring) {
@@ -56,7 +56,7 @@ struct Literal_to_string_vis
     
     std::string operator()(bool value)
     {
-        return std::to_string(value);
+        return value ? "TRUE" : "FALSE";
     }
 };
 
