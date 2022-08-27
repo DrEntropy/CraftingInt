@@ -32,6 +32,7 @@
 		70319A2C28838AFF009CB227 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		7039004F28B97F0200AAEFFC /* TreeEval.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TreeEval.cpp; sourceTree = "<group>"; };
 		7039005028B97F0200AAEFFC /* TreeEval.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TreeEval.h; sourceTree = "<group>"; };
+		7095418028BA8CF800AFC6EB /* Value.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Value.h; sourceTree = "<group>"; };
 		70C784A728B6C94200117F6E /* Parser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Parser.cpp; sourceTree = "<group>"; };
 		70C784AA28B6D8D200117F6E /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		70C8E04628AD45F900B35861 /* AstPrint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AstPrint.h; sourceTree = "<group>"; };
@@ -82,6 +83,7 @@
 				70C784A728B6C94200117F6E /* Parser.cpp */,
 				7039004F28B97F0200AAEFFC /* TreeEval.cpp */,
 				7039005028B97F0200AAEFFC /* TreeEval.h */,
+				7095418028BA8CF800AFC6EB /* Value.h */,
 			);
 			path = tlox;
 			sourceTree = "<group>";

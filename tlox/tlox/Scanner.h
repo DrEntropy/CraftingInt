@@ -16,7 +16,7 @@ class Scanner
 {
 public:
     
-    Scanner(std::string& code,std::function<void(int, std::string)> errorCallback ):source{code}, errorCallback {errorCallback} {
+    Scanner(std::string& code, std::function<void(int, std::string)> errorCallback ):source{code}, errorCallback {errorCallback} {
         
     }
     

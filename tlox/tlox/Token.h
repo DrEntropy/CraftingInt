@@ -8,9 +8,12 @@
 #ifndef Token_h
 #define Token_h
 
+
 #include <variant>
 #include <map>
 #include <string>
+
+#include "Value.h"
 
 // NOTE: TRUE , FALSE and EOF tokens are different from the book due to c++ keywords.
 
@@ -33,32 +36,6 @@ extern std::map<TokenType, std::string> tokenStrings;
 
 extern std::map<std::string, TokenType> keywords;
 
-// used for literal tokens and for Literal class to hold values.
-using Value = std::variant<std::monostate, double, std::string, bool>;
-
-
-// Visitor for literal variant. If too much of this refactor
-struct Literal_to_string_vis
-{
-    std::string operator()(std::monostate)
-    {
-        return "NIL";
-    }
-    
-    std::string operator()(std::string astring) {
-        return astring;
-    }
-    
-    std::string operator()(double value)
-    {
-        return std::to_string(value);
-    }
-    
-    std::string operator()(bool value)
-    {
-        return value ? "TRUE" : "FALSE";
-    }
-};
 
 class Token
 {
@@ -69,7 +46,7 @@ public:
     std::string toString()
     {
         return tokenStrings[type] + " " + lexeme + " "  +
-                std::visit(Literal_to_string_vis(), literal);
+        Stringify(literal);
     }
     
     std::string lexeme;

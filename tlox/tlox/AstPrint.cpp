@@ -6,6 +6,7 @@
 //
 
 #include "AstPrint.h"
+#include "Value.h"
 
 // THERE HAS to be a better way then creating all these sub visitors. 
 
@@ -28,7 +29,7 @@ void AstPrint::visit(Grouping& el)
 
 void AstPrint::visit(Literal& el)
 {
-    astString = std::visit(Literal_to_string_vis(), el.value);
+    astString = Stringify(el.value);
 }
 
 void AstPrint::visit(Unary& el)
