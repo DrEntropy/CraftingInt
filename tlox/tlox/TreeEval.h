@@ -10,6 +10,7 @@
 
 #include "Expr.h"
 #include "Token.h"
+#include "Value.h"
 #include <string>
 
 
@@ -23,7 +24,7 @@ public:
     
     std::string toString()
     {
-        return std::visit(Literal_to_string_vis(), value);
+        return Stringify (value);
     }
     
     Value value;

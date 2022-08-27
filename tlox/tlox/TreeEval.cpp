@@ -27,19 +27,19 @@ void TreeEval::visit(Grouping& el)
 {
     TreeEval inner;
     el.expression->accept(inner);
-    // TODO
+    value = inner.value;
     
 }
 
 void TreeEval::visit(Literal& el)
 {
     value =   el.value;
-    //TODO
+     
 }
 
 void TreeEval::visit(Unary& el)
 {
     TreeEval inner;
     el.right->accept(inner);
-    //TODO
+    
 }
