@@ -13,11 +13,13 @@
 #include "Expr.h"
 #include "AstPrint.h"
 #include "Parser.h"
+#include "TreeEval.h"
 
 
 // All of this crap should be in an error reporting class
 
 bool hadError = false;
+bool hadRuntimeError = false;
 
 
 void report(int line, std::string where, std::string message)
@@ -38,7 +40,14 @@ void parse_error(Token token, std::string message) {
       report(token.line, " at '" + token.lexeme + "'", message);
     }
   }
-// end poor error reporting ;)
+
+void runtime_error(RunTimeError err)
+{
+    std::cerr << err.message << "\n[line " << err.token.line << "]\n";
+    hadRuntimeError = true;
+}
+
+
 
 void run(std::string source)
 {
@@ -54,11 +63,10 @@ void run(std::string source)
    //   std::cout << token.toString() << "\n";
    // }
     std::shared_ptr<Expr> expr = parser.parse();
-    AstPrint printer;
+    //AstPrint printer;
     if(expr)
     {
-    expr->accept(printer);
-    std::cout << printer.toString() << "\n";
+        interpret(*expr, runtime_error);
     }
 }
 
@@ -74,9 +82,9 @@ void runFile(std::string filename)
         buffer << t.rdbuf();
         run(buffer.str());
         if(hadError)
-        {
             exit(EXIT_FAILURE);
-        }
+        if(hadRuntimeError)
+            exit(70); // verify this code
     }
     else
     {

@@ -13,6 +13,18 @@
 #include "Value.h"
 #include <string>
 
+Value evaluate(Expr& expr);
+
+
+struct RunTimeError
+{
+    RunTimeError(Token token, std::string message):token{token}, message{message}{}
+    
+    Token token;
+    std::string message;
+};
+
+void interpret(Expr& expression, std::function<void(RunTimeError)> error_fun);
 
 class TreeEval : public Visitor
 {
@@ -28,6 +40,10 @@ public:
     }
     
     Value value;
+    
+private:
+    std::function<void(Token, std::string)> error;
+ 
 };
 
 
