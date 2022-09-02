@@ -20,7 +20,7 @@ void interpret(Expr& expression, std::function<void(RunTimeError)> error_fun)
     try {
         Value value = evaluate(expression);
         std::cout << Stringify(value) << "\n";
-    } catch (RunTimeError err) {
+    } catch (const RunTimeError& err) {
         error_fun(err);
     }
 }
