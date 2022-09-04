@@ -11,13 +11,16 @@ visitString = """
 indent4 = "    "
 
 def genVisitor(classDesc):
+    res = "\n" + indent4 +  "class Visitor\n" + indent4 + "{\n" +  indent4+ "public:\n"
+    for (className, fieldlist) in classDesc:
+        res += indent4 + indent4 + f"virtual void visit({className}& el)=0;\n"
+    res += indent4 + "};\n\n"
+    return res
+
+def forwardDeclare(classDesc):
     res = ""
     for (className, fieldlist) in classDesc:
         res += f"class {className};\n"
-    res += "\nclass Visitor\n{\npublic:\n"
-    for (className, fieldlist) in classDesc:
-        res += indent4 + f"virtual void visit({className}& el)=0;\n"
-    res += "};\n\n"
     return res
 
 def processField(field):
@@ -57,9 +60,10 @@ def defineAst(outputDir, baseName, types):
         f.write(f"#define {baseName}_h\n")
         f.write('#include "Token.h"\n\n\n')
         classdescs = [(type.split(':')[0].strip(),type.split(':')[1].strip()) for type in types]
-        f.write(genVisitor(classdescs))
+        f.write(forwardDeclare(classdescs))
         f.write(f"class {baseName}\n")
         f.write("{\npublic:\n")
+        f.write(genVisitor(classdescs))
         f.write("    virtual void accept(Visitor& v) = 0;\n};\n") 
         for (className, fieldlist) in classdescs:
             f.write(defineType(baseName,className, fieldlist))
@@ -80,3 +84,7 @@ defineAst(args.dest, "Expr", ["Binary : Expr* left, Token op, Expr* right",
                               "Literal  : Value value",
                                "Unary   : Token op, Expr* right"
                               ])
+
+
+defineAst(args.dest, "Stmt", ["Expression : Expr* expression", 
+                              "Print      : Expr* expression"])

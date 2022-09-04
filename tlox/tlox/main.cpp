@@ -64,6 +64,7 @@ void run(std::string source)
    // }
     std::shared_ptr<Expr> expr = parser.parse();
     //AstPrint printer;
+    
     if(expr)
     {
         interpret(*expr, runtime_error);

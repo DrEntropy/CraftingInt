@@ -26,7 +26,7 @@ struct RunTimeError
 
 void interpret(Expr& expression, std::function<void(RunTimeError)> error_fun);
 
-class TreeEval : public Visitor
+class TreeEval : public Expr::Visitor
 {
 public:
     void visit(Binary& el);

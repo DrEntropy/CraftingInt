@@ -11,7 +11,7 @@
 #include <string>
 
 
-class AstPrint : public Visitor
+class AstPrint : public Expr::Visitor
 {
 public:
     void visit(Binary& el);
