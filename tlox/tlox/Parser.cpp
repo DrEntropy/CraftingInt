@@ -149,7 +149,7 @@ ParseError Parser::error(Token token, std::string message)
 //
 //}
 
-std::shared_ptr<Stmt> Parser::statement()
+std::unique_ptr<Stmt> Parser::statement()
 {
     // NOTE parse errors are not caught so crash the program for now.
     if(match({TokenType::PRINT}))
@@ -159,26 +159,26 @@ std::shared_ptr<Stmt> Parser::statement()
         
 }
 
-std::shared_ptr<Stmt> Parser::printStatement()
+std::unique_ptr<Stmt> Parser::printStatement()
 {
     std::shared_ptr<Expr> value = expression();
     consume(TokenType::SEMICOLON, "Expect ';' after Value.");
-    return std::make_shared<Print>(value);
+    return std::make_unique<Print>(value);
         
 }
 
 // umm, its really almost the same
-std::shared_ptr<Stmt> Parser::expressionStatement()
+std::unique_ptr<Stmt> Parser::expressionStatement()
 {
     std::shared_ptr<Expr> value = expression();
     consume(TokenType::SEMICOLON, "Expect ';' after Value.");
-    return std::make_shared<ExprStmt>(value);
+    return std::make_unique<ExprStmt>(value);
         
 }
 
-std::vector<std::shared_ptr<Stmt>> Parser::parse()
+std::vector<std::unique_ptr<Stmt>> Parser::parse()
 {
-    std::vector<std::shared_ptr<Stmt>> statements{};
+    std::vector<std::unique_ptr<Stmt>> statements{};
     while (!isAtEnd())
         statements.push_back(statement());
     

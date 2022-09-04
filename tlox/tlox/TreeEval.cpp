@@ -22,10 +22,10 @@ void execute(Stmt& stmt)
     stmt.accept(visitor);
 }
 
-void interpret(std::vector<std::shared_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun)
+void interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun)
 {
     try {
-        for(auto statement : statements)
+        for(auto& statement : statements)
         {
             execute(*statement);
         }

@@ -63,7 +63,7 @@ void run(std::string source)
     // for (Token token : tokens) {
    //   std::cout << token.toString() << "\n";
    // }
-    std::vector< std::shared_ptr<Stmt> > statements = parser.parse();
+    std::vector< std::unique_ptr<Stmt> > statements = parser.parse();
     //AstPrint printer;
     interpret(statements, runtime_error);
 }

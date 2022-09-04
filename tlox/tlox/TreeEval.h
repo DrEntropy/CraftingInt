@@ -26,7 +26,7 @@ struct RunTimeError
     std::string message;
 };
 
-void interpret(std::vector<std::shared_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun);
+void interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun);
 
 class TreeEval : public Expr::Visitor, public Stmt::Visitor
 {
