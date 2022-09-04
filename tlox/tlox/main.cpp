@@ -11,6 +11,7 @@
 #include <fstream>
 #include "Scanner.h"
 #include "Expr.h"
+#include "Stmt.h"
 #include "AstPrint.h"
 #include "Parser.h"
 #include "TreeEval.h"
@@ -62,13 +63,9 @@ void run(std::string source)
     // for (Token token : tokens) {
    //   std::cout << token.toString() << "\n";
    // }
-    std::shared_ptr<Expr> expr = parser.parse();
+    std::vector< std::shared_ptr<Stmt> > statements = parser.parse();
     //AstPrint printer;
-    
-    if(expr)
-    {
-        interpret(*expr, runtime_error);
-    }
+    interpret(statements, runtime_error);
 }
 
 

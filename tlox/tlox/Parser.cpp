@@ -151,6 +151,7 @@ ParseError Parser::error(Token token, std::string message)
 
 std::shared_ptr<Stmt> Parser::statement()
 {
+    // NOTE parse errors are not caught so crash the program for now.
     if(match({TokenType::PRINT}))
         return printStatement();
     
