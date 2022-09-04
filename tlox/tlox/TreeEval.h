@@ -9,9 +9,11 @@
 #define TreeEval_h
 
 #include "Expr.h"
+#include "Stmt.h"
 #include "Token.h"
 #include "Value.h"
 #include <string>
+#include <vector>
 
 Value evaluate(Expr& expr);
 
@@ -24,15 +26,17 @@ struct RunTimeError
     std::string message;
 };
 
-void interpret(Expr& expression, std::function<void(RunTimeError)> error_fun);
+void interpret(std::vector<std::shared_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun);
 
-class TreeEval : public Expr::Visitor
+class TreeEval : public Expr::Visitor, public Stmt::Visitor
 {
 public:
     void visit(Binary& el);
     void visit(Grouping& el);
     void visit(Literal& el);
     void visit(Unary& el);
+    void visit(ExprStmt& el);
+    void visit(Print& el);
     
     std::string toString()
     {

@@ -5,7 +5,7 @@
 #include "Token.h"
 
 
-class Expression;
+class ExprStmt;
 class Print;
 class Stmt
 {
@@ -14,17 +14,17 @@ public:
     class Visitor
     {
     public:
-        virtual void visit(Expression& el)=0;
+        virtual void visit(ExprStmt& el)=0;
         virtual void visit(Print& el)=0;
     };
 
     virtual void accept(Visitor& v) = 0;
 };
 
-class Expression : public Stmt
+class ExprStmt : public Stmt
 {
 public:
-    Expression(std::shared_ptr<Expr> expression):expression{expression}{}
+    ExprStmt(std::shared_ptr<Expr> expression):expression{expression}{}
 
    void accept(Visitor& v) override
     {

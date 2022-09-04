@@ -9,6 +9,7 @@
 #define Parser_hpp
 
 #include "Expr.h"
+#include "Stmt.h"
 #include <vector>
 
 
@@ -19,7 +20,8 @@ class Parser
 public:
     Parser(std::vector<Token> tokens, std::function<void(Token, std::string)> errorCallback):tokens{tokens}, errorCallback{errorCallback}{};
     
-    std::shared_ptr<Expr> parse();
+    //std::shared_ptr<Expr> parse();
+    std::vector<std::shared_ptr<Stmt>> parse();
     
 private:
     
@@ -30,6 +32,10 @@ private:
     std::shared_ptr<Expr> factor();
     std::shared_ptr<Expr> unary();
     std::shared_ptr<Expr> primary();
+    
+    std::shared_ptr<Stmt> statement();
+    std::shared_ptr<Stmt> expressionStatement();
+    std::shared_ptr<Stmt> printStatement();
     
     bool match(std::initializer_list<TokenType>);
     bool check(TokenType);

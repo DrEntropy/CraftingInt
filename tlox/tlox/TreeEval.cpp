@@ -15,11 +15,20 @@ Value evaluate(Expr& expr)
     return visitor.value;
 }
 
-void interpret(Expr& expression, std::function<void(RunTimeError)> error_fun)
+
+void execute(Stmt& stmt)
+{
+    TreeEval visitor;
+    stmt.accept(visitor);
+}
+
+void interpret(std::vector<std::shared_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun)
 {
     try {
-        Value value = evaluate(expression);
-        std::cout << Stringify(value) << "\n";
+        for(auto statement : statements)
+        {
+            execute(*statement);
+        }
     } catch (const RunTimeError& err) {
         error_fun(err);
     }
@@ -134,5 +143,18 @@ void TreeEval::visit(Unary& el)
         default:  //Note this is not possible, parse error
             throw RunTimeError(el.op, "Illegal unary operator.");
     }
-    
 }
+
+void TreeEval::visit(ExprStmt& el)
+{
+    evaluate(*el.expression);
+    // discards return value
+}
+    
+void TreeEval::visit(Print& el)
+{
+    value = evaluate(*el.expression);
+    std::cout << toString() << "\n";
+}
+    
+ 

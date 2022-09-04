@@ -86,5 +86,5 @@ defineAst(args.dest, "Expr", ["Binary : Expr* left, Token op, Expr* right",
                               ])
 
 
-defineAst(args.dest, "Stmt", ["Expression : Expr* expression", 
+defineAst(args.dest, "Stmt", ["ExprStmt : Expr* expression", 
                               "Print      : Expr* expression"])

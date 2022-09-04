@@ -135,16 +135,51 @@ ParseError Parser::error(Token token, std::string message)
 }
 
 
-std::shared_ptr<Expr> Parser::parse()
+//std::shared_ptr<Expr> Parser::parse()
+//{
+//
+//    try
+//    {
+//        return expression();
+//    }
+//        catch (ParseError error)
+//    {
+//        return nullptr;
+//    }
+//
+//}
+
+std::shared_ptr<Stmt> Parser::statement()
 {
- 
-    try
-    {
-        return expression();
-    }
-        catch (ParseError error)
-    {
-        return nullptr;
-    }
-      
+    if(match({TokenType::PRINT}))
+        return printStatement();
+    
+    return expressionStatement();
+        
+}
+
+std::shared_ptr<Stmt> Parser::printStatement()
+{
+    std::shared_ptr<Expr> value = expression();
+    consume(TokenType::SEMICOLON, "Expect ';' after Value.");
+    return std::make_shared<Print>(value);
+        
+}
+
+// umm, its really almost the same
+std::shared_ptr<Stmt> Parser::expressionStatement()
+{
+    std::shared_ptr<Expr> value = expression();
+    consume(TokenType::SEMICOLON, "Expect ';' after Value.");
+    return std::make_shared<ExprStmt>(value);
+        
+}
+
+std::vector<std::shared_ptr<Stmt>> Parser::parse()
+{
+    std::vector<std::shared_ptr<Stmt>> statements{};
+    while (!isAtEnd())
+        statements.push_back(statement());
+    
+    return statements;
 }
