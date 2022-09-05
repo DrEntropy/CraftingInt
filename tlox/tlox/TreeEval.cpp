@@ -158,7 +158,7 @@ void TreeEval::visit(ExprStmt& el)
     
 void TreeEval::visit(Print& el)
 {
-    value = evaluate(*el.expression, environment);
+    evaluate(*el.expression, environment);
     std::cout << toString() << "\n";
 }
     

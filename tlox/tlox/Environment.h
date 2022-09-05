@@ -31,7 +31,7 @@ struct Environment {
         try {
             return values.at(name.lexeme);
         } catch (const std::out_of_range& e) {
-            throw RunTimeError(name, "Undefined Variable" + name.lexeme + "");
+            throw RunTimeError(name, "Undefined Variable: " + name.lexeme + "");
         }
     }
     

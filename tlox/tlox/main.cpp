@@ -50,13 +50,13 @@ void runtime_error(RunTimeError err)
 
 
 
-void run(std::string source, Environment& env)
+Value run(std::string source, Environment& env)
 {
     Scanner scanner{source, error};
     
     std::vector<Token> tokens = scanner.scanTokens();
     Parser parser{tokens, parse_error};
-    if(hadError) return;
+    if(hadError) return Value();
     
     
     // For now, just print the tokens.
@@ -66,8 +66,9 @@ void run(std::string source, Environment& env)
     std::vector< std::unique_ptr<Stmt> > statements = parser.parse();
     //AstPrint printer;
  
-    auto value = interpret(statements, runtime_error,env);
-    std::cout << "Value:" << Stringify(value) << "\n";
+    return interpret(statements, runtime_error,env);
+    
+ 
 }
 
 
@@ -105,7 +106,11 @@ void runPrompt()
         std::getline(std::cin,line);
         if(std::cin.eof())
             break;
-        run(line, env);
+       auto value =  run(line, env);
+        //if not null, print it for read eval loop
+        if(! std::holds_alternative<std::monostate>(value))
+              std::cout << "Value:" << Stringify(value) << "\n";
+        
         hadError = false; // keep going even if there was an error
     }
     
