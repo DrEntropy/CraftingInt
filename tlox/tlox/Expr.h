@@ -5,6 +5,7 @@
 #include "Token.h"
 
 
+class Assign;
 class Binary;
 class Grouping;
 class Literal;
@@ -17,6 +18,7 @@ public:
     class Visitor
     {
     public:
+        virtual void visit(Assign& el)=0;
         virtual void visit(Binary& el)=0;
         virtual void visit(Grouping& el)=0;
         virtual void visit(Literal& el)=0;
@@ -25,6 +27,21 @@ public:
     };
 
     virtual void accept(Visitor& v) = 0;
+};
+
+class Assign : public Expr
+{
+public:
+    Assign(Token name, std::shared_ptr<Expr> value):name{name}, value{value}{}
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
+    Token name;
+    std::shared_ptr<Expr> value;
+
 };
 
 class Binary : public Expr

@@ -5,24 +5,43 @@
 #include "Token.h"
 
 
+class Assign;
 class Binary;
 class Grouping;
 class Literal;
 class Unary;
-
-class Visitor
-{
-public:
-    virtual void visit(Binary& el)=0;
-    virtual void visit(Grouping& el)=0;
-    virtual void visit(Literal& el)=0;
-    virtual void visit(Unary& el)=0;
-};
-
+class Variable;
 class Expr
 {
 public:
+
+    class Visitor
+    {
+    public:
+        virtual void visit(Assign& el)=0;
+        virtual void visit(Binary& el)=0;
+        virtual void visit(Grouping& el)=0;
+        virtual void visit(Literal& el)=0;
+        virtual void visit(Unary& el)=0;
+        virtual void visit(Variable& el)=0;
+    };
+
     virtual void accept(Visitor& v) = 0;
+};
+
+class Assign : public Expr
+{
+public:
+    Assign(Token name, std::shared_ptr<Expr> value):name{name}, value{value}{}
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
+    Token name;
+    std::shared_ptr<Expr> value;
+
 };
 
 class Binary : public Expr
@@ -81,6 +100,20 @@ public:
 
     Token op;
     std::shared_ptr<Expr> right;
+
+};
+
+class Variable : public Expr
+{
+public:
+    Variable(Token name):name{name}{}
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
+    Token name;
 
 };
 

@@ -79,7 +79,8 @@ args = parser.parse_args()
 
 # 
 
-defineAst(args.dest, "Expr", ["Binary : Expr* left, Token op, Expr* right",
+defineAst(args.dest, "Expr", ["Assign   : Token name, Expr* value",
+                              "Binary : Expr* left, Token op, Expr* right",
                               "Grouping : Expr* expression",
                               "Literal  : Value value",
                                "Unary   : Token op, Expr* right",

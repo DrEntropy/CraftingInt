@@ -26,6 +26,7 @@ class TreeEval : public Expr::Visitor, public Stmt::Visitor
 public:
     TreeEval(Environment& env) : environment {env}  {}
     
+    void visit(Assign& el);
     void visit(Binary& el);
     void visit(Grouping& el);
     void visit(Literal& el);
