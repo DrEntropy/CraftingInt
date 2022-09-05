@@ -193,9 +193,25 @@ std::unique_ptr<Stmt> Parser::statement()
     // NOTE parse errors are not caught so crash the program for now.
     if(match({TokenType::PRINT}))
         return printStatement();
+    if(match({TokenType::LEFT_BRACE}))
+        return std::make_unique<Block>(blockStatements());
     
     return expressionStatement();
         
+}
+
+
+// Note that using shared_ptr here is a crutch to avoid complicating my AST generating code.
+std::vector<std::shared_ptr<Stmt>> Parser::blockStatements()
+{
+    std::vector<std::shared_ptr<Stmt> > statements;
+
+     while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+       statements.emplace_back(declaration());
+     }
+
+     consume(TokenType::RIGHT_BRACE, "Expect '}' after block.");
+     return statements;
 }
 
 std::unique_ptr<Stmt> Parser::printStatement()

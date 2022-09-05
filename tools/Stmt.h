@@ -2,9 +2,12 @@
 
 #ifndef Stmt_h
 #define Stmt_h
+#include<vector>
 #include "Token.h"
 
 
+using StatementList = std::vector(std::unique_ptr<Stmt>);
+class Block;
 class ExprStmt;
 class Print;
 class Var;
@@ -15,12 +18,27 @@ public:
     class Visitor
     {
     public:
+        virtual void visit(Block& el)=0;
         virtual void visit(ExprStmt& el)=0;
         virtual void visit(Print& el)=0;
         virtual void visit(Var& el)=0;
     };
 
     virtual void accept(Visitor& v) = 0;
+};
+
+class Block : public Stmt
+{
+public:
+    Block(StatementList statements):statements{statements}{}
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
+    StatementList statements;
+
 };
 
 class ExprStmt : public Stmt

@@ -2,9 +2,11 @@
 
 #ifndef Expr_h
 #define Expr_h
+#include<vector>
 #include "Token.h"
 
 
+using StatementList = std::vector(std::unique_ptr<Stmt>);
 class Assign;
 class Binary;
 class Grouping;

@@ -2,9 +2,11 @@
 
 #ifndef Stmt_h
 #define Stmt_h
+#include<vector>
 #include "Token.h"
 
 
+class Block;
 class ExprStmt;
 class Print;
 class Var;
@@ -15,12 +17,27 @@ public:
     class Visitor
     {
     public:
+        virtual void visit(Block& el)=0;
         virtual void visit(ExprStmt& el)=0;
         virtual void visit(Print& el)=0;
         virtual void visit(Var& el)=0;
     };
 
     virtual void accept(Visitor& v) = 0;
+};
+
+class Block : public Stmt
+{
+public:
+    Block(std::vector<std::shared_ptr<Stmt>> statements):statements{statements}{}
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
+    std::vector<std::shared_ptr<Stmt>> statements;
+
 };
 
 class ExprStmt : public Stmt

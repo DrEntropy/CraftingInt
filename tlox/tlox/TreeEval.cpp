@@ -8,7 +8,7 @@
 #include "TreeEval.h"
 #include<iostream>
 
-Value evaluate(Expr& expr, Environment& env)
+Value evaluate(Expr& expr, std::shared_ptr<Environment> env)
 {
     TreeEval visitor(env);
     expr.accept(visitor);
@@ -16,14 +16,14 @@ Value evaluate(Expr& expr, Environment& env)
 }
 
 
-Value execute(Stmt& stmt, Environment& env)
+Value execute(Stmt& stmt, std::shared_ptr<Environment> env)
 {
     TreeEval visitor(env);
     stmt.accept(visitor);
     return visitor.value;
 }
 
-Value interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun, Environment& env)
+Value interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun, std::shared_ptr<Environment> env)
 {
     Value value;
     try {
@@ -171,16 +171,26 @@ void TreeEval::visit(Var& el)
          initializer = evaluate(*(el.expression), environment);
        }
 
-       environment.define(el.name.lexeme, initializer);
+       environment->define(el.name.lexeme, initializer);
 }
 
 void TreeEval::visit(Variable& el)
 {
-    value = environment.get(el.name);
+    value = environment->get(el.name);
 }
 
 void TreeEval::visit(Assign& el)
 {
     value = evaluate(*el.value, environment);
-    environment.assign(el.name, value);
+    environment->assign(el.name, value);
+}
+
+void TreeEval::visit(Block& el)
+{
+    // create a new environment
+    std::shared_ptr<Environment> inner_env = std::make_shared<Environment>();
+    inner_env->enclosing = environment;
+    
+    for (auto& statement : el.statements)
+        value = execute(*statement, inner_env);
 }

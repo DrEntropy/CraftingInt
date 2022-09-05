@@ -19,12 +19,12 @@
 
 Value evaluate(Expr& expr, Environment& env);
 
-Value interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun, Environment& env);
+Value interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun, std::shared_ptr<Environment> env);
 
 class TreeEval : public Expr::Visitor, public Stmt::Visitor
 {
 public:
-    TreeEval(Environment& env) : environment {env}  {}
+    TreeEval(std::shared_ptr<Environment> env) : environment {env}  {}
     
     void visit(Assign& el);
     void visit(Binary& el);
@@ -35,6 +35,7 @@ public:
     void visit(Print& el);
     void visit(Var& el);
     void visit(Variable& el);
+    void visit(Block& el);
 
     
     std::string toString()
@@ -45,7 +46,7 @@ public:
     Value value;
     
 private:
-    Environment& environment;
+    std::shared_ptr<Environment> environment;
 };
 
 

@@ -2,6 +2,7 @@
 
 #ifndef Expr_h
 #define Expr_h
+#include<vector>
 #include "Token.h"
 
 

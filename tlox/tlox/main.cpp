@@ -50,7 +50,7 @@ void runtime_error(RunTimeError err)
 
 
 
-Value run(std::string source, Environment& env)
+Value run(std::string source, std::shared_ptr<Environment> env)
 {
     Scanner scanner{source, error};
     
@@ -79,7 +79,7 @@ void runFile(std::string filename)
     std::ifstream t(filename);
     if(t.is_open())
     {
-        Environment env;
+        auto env{std::make_shared<Environment>()};
         std::stringstream buffer;
         buffer << t.rdbuf();
         run(buffer.str(), env);
@@ -100,7 +100,7 @@ void runPrompt()
 {
     std::cout << "Running Interpreter \n";
     std::string line;
-    Environment env;
+    auto env{std::make_shared<Environment>()};
     while(true)
     {
         std::getline(std::cin,line);

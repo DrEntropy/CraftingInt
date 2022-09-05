@@ -40,6 +40,8 @@ private:
     std::unique_ptr<Stmt> expressionStatement();
     std::unique_ptr<Stmt> printStatement();
     
+    std::vector<std::shared_ptr<Stmt>> blockStatements();
+    
     bool match(std::initializer_list<TokenType>);
     bool check(TokenType);
     
