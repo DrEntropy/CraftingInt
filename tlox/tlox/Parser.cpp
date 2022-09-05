@@ -20,7 +20,7 @@ std::shared_ptr<Expr> Parser::assignment()
 
     if (match({TokenType::EQUAL})) {
       Token equals = previous();
-      std::shared_ptr<Expr> value = assignment();
+      auto value = assignment();
       
       
       if (auto var = dynamic_cast<Variable * > (expr.get())) {
@@ -36,12 +36,12 @@ std::shared_ptr<Expr> Parser::assignment()
 
 std::shared_ptr<Expr> Parser::equality()
 {
-    std::shared_ptr<Expr> expr = comparison();
+    auto expr = comparison();
     
     while (match({TokenType::BANG_EQUAL, TokenType::EQUAL_EQUAL}))
     {
         Token op = previous();
-        std::shared_ptr<Expr> right = comparison();
+        auto right = comparison();
         expr = std::make_shared<Binary>(expr, op, right);
     }
     return expr;
@@ -49,7 +49,7 @@ std::shared_ptr<Expr> Parser::equality()
 
 std::shared_ptr<Expr> Parser::comparison()
 {
-    std::shared_ptr<Expr> expr = term();
+    auto expr = term();
     
     while (match({TokenType::GREATER, TokenType::GREATER_EQUAL, TokenType::LESS, TokenType::LESS_EQUAL}))
     {
@@ -64,7 +64,7 @@ std::shared_ptr<Expr> Parser::comparison()
 
 std::shared_ptr<Expr> Parser::term()
 {
-    std::shared_ptr<Expr> expr = factor();
+    auto expr = factor();
     
     while (match({TokenType::MINUS, TokenType::PLUS}))
     {
@@ -78,7 +78,7 @@ std::shared_ptr<Expr> Parser::term()
 
 std::shared_ptr<Expr> Parser::factor()
 {
-    std::shared_ptr<Expr> expr = unary();
+    auto expr = unary();
     
     while (match({TokenType::STAR, TokenType::SLASH }))
     {
@@ -95,7 +95,7 @@ std::shared_ptr<Expr> Parser::unary()
     if(match({TokenType::BANG, TokenType::MINUS}))
     {
         Token op = previous();
-        std::shared_ptr<Expr> right = unary();
+        auto right = unary();
         return std::make_shared<Unary>(op, right);
     }
     return primary();
@@ -113,7 +113,7 @@ std::shared_ptr<Expr> Parser::primary()
     
     if (match({TokenType::LEFT_PAREN}))
     {
-        std::shared_ptr<Expr> grouped = expression();
+        auto grouped = expression();
         consume(TokenType::RIGHT_PAREN, "Expect ')' after expression.");
         return std::make_shared<Grouping>(grouped);
     }
@@ -216,7 +216,7 @@ std::vector<std::shared_ptr<Stmt>> Parser::blockStatements()
 
 std::unique_ptr<Stmt> Parser::printStatement()
 {
-    std::shared_ptr<Expr> value = expression();
+    auto value = expression();
     consume(TokenType::SEMICOLON, "Expect ';' after Value.");
     return std::make_unique<Print>(value);
         
@@ -225,7 +225,7 @@ std::unique_ptr<Stmt> Parser::printStatement()
 // umm, its really almost the same
 std::unique_ptr<Stmt> Parser::expressionStatement()
 {
-    std::shared_ptr<Expr> value = expression();
+    auto value = expression();
     consume(TokenType::SEMICOLON, "Expect ';' after Value.");
     return std::make_unique<ExprStmt>(value);
         
