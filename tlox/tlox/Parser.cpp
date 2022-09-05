@@ -10,7 +10,28 @@
 
 std::shared_ptr<Expr> Parser::expression()
 {
-    return equality();
+    return assignment();
+}
+
+std::shared_ptr<Expr> Parser::assignment()
+{
+ 
+    std::shared_ptr<Expr> expr = equality();
+
+    if (match({TokenType::EQUAL})) {
+      Token equals = previous();
+      std::shared_ptr<Expr> value = assignment();
+      
+      
+      if (auto var = dynamic_cast<Variable * > (expr.get())) {
+        Token name = var->name;
+        return std::make_shared<Assign>(name, value);
+      }
+
+      error(equals, "Invalid assignment target.");
+    }
+
+    return expr;
 }
 
 std::shared_ptr<Expr> Parser::equality()
@@ -95,6 +116,12 @@ std::shared_ptr<Expr> Parser::primary()
         std::shared_ptr<Expr> grouped = expression();
         consume(TokenType::RIGHT_PAREN, "Expect ')' after expression.");
         return std::make_shared<Grouping>(grouped);
+    }
+    
+    if (peek().type == TokenType::SEMICOLON)
+    {
+        // null expression this is a place holder
+        return std::make_shared<Literal>(Value());
     }
     // doesn't match anything, thats an error.
     throw error(peek(), "Expecting Expression.");

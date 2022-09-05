@@ -158,10 +158,11 @@ void TreeEval::visit(ExprStmt& el)
     
 void TreeEval::visit(Print& el)
 {
-    evaluate(*el.expression, environment);
+    value = evaluate(*el.expression, environment);
     std::cout << toString() << "\n";
+    value = Value();  // to avoid reprint in REPL
 }
-    
+
  
 void TreeEval::visit(Var& el)
 {
@@ -176,4 +177,10 @@ void TreeEval::visit(Var& el)
 void TreeEval::visit(Variable& el)
 {
     value = environment.get(el.name);
+}
+
+void TreeEval::visit(Assign& el)
+{
+    value = evaluate(*el.value, environment);
+    environment.assign(el.name, value);
 }
