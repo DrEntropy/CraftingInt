@@ -33,6 +33,8 @@ private:
     std::shared_ptr<Expr> unary();
     std::shared_ptr<Expr> primary();
     
+    std::unique_ptr<Stmt> declaration();
+    std::unique_ptr<Stmt> varDeclaration();
     std::unique_ptr<Stmt> statement();
     std::unique_ptr<Stmt> expressionStatement();
     std::unique_ptr<Stmt> printStatement();
@@ -40,6 +42,7 @@ private:
     bool match(std::initializer_list<TokenType>);
     bool check(TokenType);
     
+    void synchronize();
     ParseError error(Token token, std::string message);
     
     Token advance()

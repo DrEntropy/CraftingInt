@@ -8,29 +8,34 @@
 #include "TreeEval.h"
 #include<iostream>
 
-Value evaluate(Expr& expr)
+Value evaluate(Expr& expr, Environment& env)
 {
-    TreeEval visitor;
+    TreeEval visitor(env);
     expr.accept(visitor);
     return visitor.value;
 }
 
 
-void execute(Stmt& stmt)
+Value execute(Stmt& stmt, Environment& env)
 {
-    TreeEval visitor;
+    TreeEval visitor(env);
     stmt.accept(visitor);
+    return visitor.value;
 }
 
-void interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun)
+Value interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun, Environment& env)
 {
+    Value value;
     try {
         for(auto& statement : statements)
         {
-            execute(*statement);
+            if(statement)
+               value = execute(*statement,env);
         }
+        return value;
     } catch (const RunTimeError& err) {
         error_fun(err);
+        return Value{};
     }
 }
 
@@ -61,8 +66,8 @@ bool isEqual(Value a, Value b)
 
 void TreeEval::visit(Binary& el)
 {
-    Value left = evaluate(*(el.left));
-    Value right = evaluate(*(el.right));
+    Value left = evaluate(*(el.left), environment);
+    Value right = evaluate(*(el.right), environment);
  
     switch (el.op.type)
     {
@@ -115,7 +120,7 @@ void TreeEval::visit(Binary& el)
 
 void TreeEval::visit(Grouping& el)
 {
-    TreeEval inner;
+    TreeEval inner(environment);
     el.expression->accept(inner);
     value = inner.value;
     
@@ -130,7 +135,7 @@ void TreeEval::visit(Literal& el)
 void TreeEval::visit(Unary& el)
 {
  
-    Value inner = evaluate(*(el.right));
+    Value inner = evaluate(*(el.right),environment);
     
     switch (el.op.type)
     {
@@ -147,14 +152,28 @@ void TreeEval::visit(Unary& el)
 
 void TreeEval::visit(ExprStmt& el)
 {
-    evaluate(*el.expression);
-    // discards return value
+    value = evaluate(*el.expression, environment);
+    // save return value for REPL
 }
     
 void TreeEval::visit(Print& el)
 {
-    value = evaluate(*el.expression);
+    value = evaluate(*el.expression, environment);
     std::cout << toString() << "\n";
 }
     
  
+void TreeEval::visit(Var& el)
+{
+       auto initializer =  Value(); // set value monostate
+       if (el.expression) {
+         initializer = evaluate(*(el.expression), environment);
+       }
+
+       environment.define(el.name.lexeme, initializer);
+}
+
+void TreeEval::visit(Variable& el)
+{
+    value = environment.get(el.name);
+}

@@ -88,6 +88,8 @@ std::shared_ptr<Expr> Parser::primary()
     
     if (match({TokenType::NUMBER,TokenType::STRING})) return std::make_shared<Literal>(previous().literal);
     
+    if (match({TokenType::IDENTIFIER})) return std::make_shared<Variable>(previous());
+    
     if (match({TokenType::LEFT_PAREN}))
     {
         std::shared_ptr<Expr> grouped = expression();
@@ -135,19 +137,29 @@ ParseError Parser::error(Token token, std::string message)
 }
 
 
-//std::shared_ptr<Expr> Parser::parse()
-//{
-//
-//    try
-//    {
-//        return expression();
-//    }
-//        catch (ParseError error)
-//    {
-//        return nullptr;
-//    }
-//
-//}
+void Parser::synchronize()
+{
+    advance();
+    while (!isAtEnd()) {
+       if (previous().type == TokenType::SEMICOLON) return;
+
+       switch (peek().type) {
+           case TokenType::CLASS:
+           case TokenType::FUN:
+           case TokenType::VAR:
+           case TokenType::FOR:
+           case TokenType::IF:
+           case TokenType::WHILE:
+           case TokenType::PRINT:
+           case TokenType::RETURN:
+               return;
+           default:
+               break;
+       }
+
+       advance();
+     }
+}
 
 std::unique_ptr<Stmt> Parser::statement()
 {
@@ -176,11 +188,44 @@ std::unique_ptr<Stmt> Parser::expressionStatement()
         
 }
 
+std::unique_ptr<Stmt> Parser::declaration()
+{
+    try
+    {
+        if(match({TokenType::VAR}))
+            return varDeclaration();
+        return statement();
+    
+    }
+    catch (ParseError error)
+    {
+          //synchronize();
+          return nullptr;
+    }
+}
+
+std::unique_ptr<Stmt> Parser::varDeclaration()
+{
+    Token name = consume(TokenType::IDENTIFIER, "Expect variable name.");
+    std::shared_ptr<Expr> initializer;
+    
+    if (match({TokenType::EQUAL})) {
+          initializer = expression();
+    }
+
+    consume(TokenType::SEMICOLON, "Expect ';' after variable declaration.");
+    return std::make_unique<Var> (name, initializer);
+}
+
+
 std::vector<std::unique_ptr<Stmt>> Parser::parse()
 {
     std::vector<std::unique_ptr<Stmt>> statements{};
     while (!isAtEnd())
-        statements.push_back(statement());
+        statements.push_back(declaration());
     
     return statements;
 }
+
+
+

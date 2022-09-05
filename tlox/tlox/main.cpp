@@ -12,7 +12,7 @@
 #include "Scanner.h"
 #include "Expr.h"
 #include "Stmt.h"
-#include "AstPrint.h"
+//#include "AstPrint.h"
 #include "Parser.h"
 #include "TreeEval.h"
 
@@ -50,7 +50,7 @@ void runtime_error(RunTimeError err)
 
 
 
-void run(std::string source)
+void run(std::string source, Environment& env)
 {
     Scanner scanner{source, error};
     
@@ -65,7 +65,9 @@ void run(std::string source)
    // }
     std::vector< std::unique_ptr<Stmt> > statements = parser.parse();
     //AstPrint printer;
-    interpret(statements, runtime_error);
+ 
+    auto value = interpret(statements, runtime_error,env);
+    std::cout << "Value:" << Stringify(value) << "\n";
 }
 
 
@@ -76,9 +78,10 @@ void runFile(std::string filename)
     std::ifstream t(filename);
     if(t.is_open())
     {
+        Environment env;
         std::stringstream buffer;
         buffer << t.rdbuf();
-        run(buffer.str());
+        run(buffer.str(), env);
         if(hadError)
             exit(EXIT_FAILURE);
         if(hadRuntimeError)
@@ -96,29 +99,30 @@ void runPrompt()
 {
     std::cout << "Running Interpreter \n";
     std::string line;
+    Environment env;
     while(true)
     {
         std::getline(std::cin,line);
         if(std::cin.eof())
             break;
-        run(line);
+        run(line, env);
         hadError = false; // keep going even if there was an error
     }
     
 }
 
 
-void testPrint()
-{
-    // TEST CODE  DELETE
-    std::unique_ptr<Expr> expr(new Binary(std::make_shared<Unary>(Token(TokenType::MINUS,"-",Value(),1 ),
-                                       std::make_shared<Literal>(Value(123.0))),Token(TokenType::STAR, "*", Value(), 1),
-                                       std::make_shared<Grouping>(  std::make_shared<Literal>(Value(45.67)))));
-  //  std::unique_ptr<Expr> expr(new Grouping(std::make_unique<Literal>(Value(45.67))));
-    AstPrint printer;
-    expr->accept(printer);
-    std::cout << printer.toString() << "\n";
-}
+//void testPrint()
+//{
+//    // TEST CODE  DELETE
+//    std::unique_ptr<Expr> expr(new Binary(std::make_shared<Unary>(Token(TokenType::MINUS,"-",Value(),1 ),
+//                                       std::make_shared<Literal>(Value(123.0))),Token(TokenType::STAR, "*", Value(), 1),
+//                                       std::make_shared<Grouping>(  std::make_shared<Literal>(Value(45.67)))));
+//  //  std::unique_ptr<Expr> expr(new Grouping(std::make_unique<Literal>(Value(45.67))));
+//    AstPrint printer;
+//    expr->accept(printer);
+//    std::cout << printer.toString() << "\n";
+//}
 
 
 

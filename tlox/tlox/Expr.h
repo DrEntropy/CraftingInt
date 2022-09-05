@@ -9,6 +9,7 @@ class Binary;
 class Grouping;
 class Literal;
 class Unary;
+class Variable;
 class Expr
 {
 public:
@@ -20,6 +21,7 @@ public:
         virtual void visit(Grouping& el)=0;
         virtual void visit(Literal& el)=0;
         virtual void visit(Unary& el)=0;
+        virtual void visit(Variable& el)=0;
     };
 
     virtual void accept(Visitor& v) = 0;
@@ -81,6 +83,20 @@ public:
 
     Token op;
     std::shared_ptr<Expr> right;
+
+};
+
+class Variable : public Expr
+{
+public:
+    Variable(Token name):name{name}{}
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
+    Token name;
 
 };
 

@@ -12,31 +12,29 @@
 #include "Stmt.h"
 #include "Token.h"
 #include "Value.h"
+#include "Environment.h"
+#include "RuntimeError.h"
 #include <string>
 #include <vector>
 
-Value evaluate(Expr& expr);
+Value evaluate(Expr& expr, Environment& env);
 
-
-struct RunTimeError
-{
-    RunTimeError(Token token, std::string message):token{token}, message{message}{}
-    
-    Token token;
-    std::string message;
-};
-
-void interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun);
+Value interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun, Environment& env);
 
 class TreeEval : public Expr::Visitor, public Stmt::Visitor
 {
 public:
+    TreeEval(Environment& env) : environment {env}  {}
+    
     void visit(Binary& el);
     void visit(Grouping& el);
     void visit(Literal& el);
     void visit(Unary& el);
     void visit(ExprStmt& el);
     void visit(Print& el);
+    void visit(Var& el);
+    void visit(Variable& el);
+
     
     std::string toString()
     {
@@ -46,8 +44,7 @@ public:
     Value value;
     
 private:
-    std::function<void(Token, std::string)> error;
- 
+    Environment& environment;
 };
 
 
