@@ -225,6 +225,9 @@ void Parser::synchronize()
 std::unique_ptr<Stmt> Parser::statement()
 {
     // NOTE parse errors are not caught so crash the program for now.
+    
+    if(match({TokenType::FOR}))
+        return forStatement();
     if(match({TokenType::IF}))
         return ifStatement();
     if(match({TokenType::PRINT}))
@@ -325,6 +328,62 @@ std::unique_ptr<Stmt> Parser::whileStatement()
 }
 
 
-
+std::unique_ptr<Stmt> Parser::forStatement()
+{
+    // build a while expression (desugar)
+    consume(TokenType::LEFT_PAREN, "Expect '(' after 'for'.");
+    
+    //Initializer
+    std::unique_ptr<Stmt> initializer;
+    if (match({TokenType::SEMICOLON})) {
+          // null initilzer
+    } else if (match({TokenType::VAR})) {
+          initializer = varDeclaration();
+    } else {
+          initializer = expressionStatement();
+    }
+    
+    // Condition
+    std::shared_ptr<Expr> condition;
+    if (!check(TokenType::SEMICOLON))
+    {
+      condition = expression();
+    }
+    consume(TokenType::SEMICOLON, "Expect ';' after loop condition.");
+    
+    // Increment
+    std::shared_ptr<Expr> increment;
+    if (!check(TokenType::RIGHT_PAREN))
+    {
+      increment = expression();
+    }
+    consume(TokenType::RIGHT_PAREN, "Expect ')' after for clauses.");
+    
+    // Body:
+    auto body = statement();
+    if (increment)
+    {
+        std::vector<std::shared_ptr<Stmt> > parts;
+        parts.push_back(std::move(body));  // body is unique ptr.
+        parts.push_back(std::make_shared<ExprStmt>(increment));
+        body = std::make_unique<Block>(parts);
+    }
+    
+    // build while loop
+    if(!condition)
+        condition = std::make_shared<Literal>(true);
+    
+    body = std::make_unique<While>(condition, std::move(body));
+    
+    // deal with initializer.
+    if (initializer)
+    {
+        std::vector<std::shared_ptr<Stmt> > parts;
+        parts.push_back(std::move(initializer));
+        parts.push_back(std::move(body));
+        body = std::make_unique<Block>(parts);
+    }
+    return body;
+}
 
 
