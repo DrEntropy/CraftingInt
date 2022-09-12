@@ -94,7 +94,7 @@ defineAst(args.dest, "Expr", ["Assign   : Token name, Expr* value",
 
 defineAst(args.dest, "Stmt", ["Block      : List<Stmt> statements",
                               "ExprStmt : Expr* expression", 
-                              "If      : Expr* condition, Stmt* ThenBranch, Stmt* ElseBranch",
+                              "If      : Expr* condition, Stmt* thenBranch, Stmt* elseBranch",
                               "Print      : Expr* expression", 
-                              "While : Expr* condition, Stmt* body"
+                              "While : Expr* condition, Stmt* body",
                               "Var      : Token name, Expr* expression"])
