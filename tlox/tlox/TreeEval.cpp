@@ -205,9 +205,28 @@ void TreeEval::visit(If& stmt)
       }
 }
 
-void TreeEval::visit(Logical& el)
+void TreeEval::visit(Logical& expr)
 {
-    // TODO
+    auto left = evaluate(*expr.left, environment);
+
+    if (expr.op.type == TokenType::OR)
+    {
+      if (isTruthy(left))
+      {
+          value = left;
+          return;
+      }
+
+    } else
+    {
+      if (!isTruthy(left))
+      {
+          value = left;
+          return;
+      }
+    }
+
+    value = evaluate(*expr.right, environment);
 }
 
 void TreeEval::visit(While& el)
