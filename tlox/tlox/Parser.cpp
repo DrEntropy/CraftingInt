@@ -8,6 +8,15 @@
 #include "Parser.h"
 
 
+std::vector<std::unique_ptr<Stmt>> Parser::parse()
+{
+    std::vector<std::unique_ptr<Stmt>> statements{};
+    while (!isAtEnd())
+        statements.push_back(declaration());
+    
+    return statements;
+}
+
 std::shared_ptr<Expr> Parser::expression()
 {
     return assignment();
@@ -220,6 +229,8 @@ std::unique_ptr<Stmt> Parser::statement()
         return ifStatement();
     if(match({TokenType::PRINT}))
         return printStatement();
+    if(match({TokenType::WHILE}))
+        return whileStatement();
     if(match({TokenType::LEFT_BRACE}))
         return std::make_unique<Block>(blockStatements());
     
@@ -303,14 +314,17 @@ std::unique_ptr<Stmt> Parser::ifStatement()
     
 }
 
-std::vector<std::unique_ptr<Stmt>> Parser::parse()
+std::unique_ptr<Stmt> Parser::whileStatement()
 {
-    std::vector<std::unique_ptr<Stmt>> statements{};
-    while (!isAtEnd())
-        statements.push_back(declaration());
-    
-    return statements;
+    consume(TokenType::LEFT_PAREN, "Expect '(' after 'while'.");
+    auto condition = expression();
+    consume(TokenType::RIGHT_PAREN, "Expect ')' after condition.");
+    auto body = statement();
+
+    return std::make_unique<While>(condition, std::move(body));
 }
+
+
 
 
 

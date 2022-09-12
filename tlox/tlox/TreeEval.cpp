@@ -229,7 +229,10 @@ void TreeEval::visit(Logical& expr)
     value = evaluate(*expr.right, environment);
 }
 
-void TreeEval::visit(While& el)
+void TreeEval::visit(While& stmt)
 {
-    // TODO
+    while (isTruthy(evaluate(*stmt.condition, environment))) {
+         execute(*stmt.body, environment);
+       }
+ 
 }
