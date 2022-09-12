@@ -8,8 +8,9 @@
 
 class Block;
 class ExprStmt;
+class If;
 class Print;
-class Var;
+class While;
 class Stmt
 {
 public:
@@ -19,8 +20,9 @@ public:
     public:
         virtual void visit(Block& el)=0;
         virtual void visit(ExprStmt& el)=0;
+        virtual void visit(If& el)=0;
         virtual void visit(Print& el)=0;
-        virtual void visit(Var& el)=0;
+        virtual void visit(While& el)=0;
     };
 
     virtual void accept(Visitor& v) = 0;
@@ -54,6 +56,22 @@ public:
 
 };
 
+class If : public Stmt
+{
+public:
+    If(std::shared_ptr<Expr> condition, std::shared_ptr<Stmt> ThenBranch, std::shared_ptr<Stmt> ElseBranch):condition{condition}, ThenBranch{ThenBranch}, ElseBranch{ElseBranch}{}
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
+    std::shared_ptr<Expr> condition;
+    std::shared_ptr<Stmt> ThenBranch;
+    std::shared_ptr<Stmt> ElseBranch;
+
+};
+
 class Print : public Stmt
 {
 public:
@@ -68,18 +86,18 @@ public:
 
 };
 
-class Var : public Stmt
+class While : public Stmt
 {
 public:
-    Var(Token name, std::shared_ptr<Expr> expression):name{name}, expression{expression}{}
+    While(std::shared_ptr<Expr> condition, std::shared_ptr<Stmt> bodyVar):condition{condition}, bodyVar{bodyVar}{}
 
    void accept(Visitor& v) override
     {
         return v.visit(*this);
     }
 
-    Token name;
-    std::shared_ptr<Expr> expression;
+    std::shared_ptr<Expr> condition;
+    std::shared_ptr<Stmt> bodyVar;
 
 };
 

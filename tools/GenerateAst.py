@@ -86,6 +86,7 @@ defineAst(args.dest, "Expr", ["Assign   : Token name, Expr* value",
                               "Binary : Expr* left, Token op, Expr* right",
                               "Grouping : Expr* expression",
                               "Literal  : Value value",
+                              "Logical  : Expr* left,Token op, Expr* right",
                                "Unary   : Token op, Expr* right",
                                "Variable : Token name"
                               ])
@@ -93,5 +94,7 @@ defineAst(args.dest, "Expr", ["Assign   : Token name, Expr* value",
 
 defineAst(args.dest, "Stmt", ["Block      : List<Stmt> statements",
                               "ExprStmt : Expr* expression", 
-                              "Print      : Expr* expression",
+                              "If      : Expr* condition, Stmt* ThenBranch, Stmt* ElseBranch",
+                              "Print      : Expr* expression", 
+                              "While : Expr* condition, Stmt* body"
                               "Var      : Token name, Expr* expression"])

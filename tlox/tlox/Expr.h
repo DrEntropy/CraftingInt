@@ -10,6 +10,7 @@ class Assign;
 class Binary;
 class Grouping;
 class Literal;
+class Logical;
 class Unary;
 class Variable;
 class Expr
@@ -23,6 +24,7 @@ public:
         virtual void visit(Binary& el)=0;
         virtual void visit(Grouping& el)=0;
         virtual void visit(Literal& el)=0;
+        virtual void visit(Logical& el)=0;
         virtual void visit(Unary& el)=0;
         virtual void visit(Variable& el)=0;
     };
@@ -86,6 +88,22 @@ public:
     }
 
     Value value;
+
+};
+
+class Logical : public Expr
+{
+public:
+    Logical(std::shared_ptr<Expr> left, Token op, std::shared_ptr<Expr> right):left{left}, op{op}, right{right}{}
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
+    std::shared_ptr<Expr> left;
+    Token op;
+    std::shared_ptr<Expr> right;
 
 };
 
