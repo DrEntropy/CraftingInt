@@ -62,6 +62,8 @@ std::shared_ptr<Expr> Parser::comparison()
 }
 
 
+
+
 std::shared_ptr<Expr> Parser::term()
 {
     auto expr = factor();
@@ -191,6 +193,8 @@ void Parser::synchronize()
 std::unique_ptr<Stmt> Parser::statement()
 {
     // NOTE parse errors are not caught so crash the program for now.
+    if(match({TokenType::IF}))
+        return ifStatement();
     if(match({TokenType::PRINT}))
         return printStatement();
     if(match({TokenType::LEFT_BRACE}))
@@ -260,6 +264,21 @@ std::unique_ptr<Stmt> Parser::varDeclaration()
     return std::make_unique<Var> (name, initializer);
 }
 
+std::unique_ptr<Stmt> Parser::ifStatement()
+{
+    consume(TokenType::LEFT_PAREN, "Expect '(' after 'if'.");
+    std::shared_ptr<Expr> condition = expression();
+    consume(TokenType::RIGHT_PAREN, "Expect ')' after if condition.");
+
+    std::unique_ptr<Stmt> thenBranch = statement();
+    std::unique_ptr<Stmt> elseBranch;  // null
+    if (match({TokenType::ELSE})) {
+          elseBranch = statement();
+        }
+
+    return std::make_unique<If>(condition, std::move(thenBranch), std::move(elseBranch));
+    
+}
 
 std::vector<std::unique_ptr<Stmt>> Parser::parse()
 {

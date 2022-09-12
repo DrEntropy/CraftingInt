@@ -194,3 +194,23 @@ void TreeEval::visit(Block& el)
     for (auto& statement : el.statements)
         value = execute(*statement, inner_env);
 }
+
+
+void TreeEval::visit(If& stmt)
+{
+    if (isTruthy(evaluate(*stmt.condition, environment))) {
+        execute(*stmt.thenBranch, environment);
+      } else if (stmt.elseBranch) {
+        execute(*stmt.elseBranch,environment);
+      }
+}
+
+void TreeEval::visit(Logical& el)
+{
+    // TODO
+}
+
+void TreeEval::visit(While& el)
+{
+    // TODO
+}
