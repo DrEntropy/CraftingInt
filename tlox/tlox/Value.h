@@ -10,9 +10,11 @@
 
 #include <variant>
 #include <string>
+#include "Callable.h"
 
-// used for literal tokens and for Literal class to hold values.
-using Value = std::variant<std::monostate, double, std::string, bool>;
+// used for all fully evaluated 'values'.  monostate is the nulll state.
+
+using Value = std::variant<std::monostate, double, std::string, bool, std::shared_ptr<Callable>>;
 
 
 // Visitor for literal variant. If too much of this refactor
@@ -35,6 +37,11 @@ struct Literal_to_string_vis
     std::string operator()(bool value)
     {
         return value ? "TRUE" : "FALSE";
+    }
+    
+    std::string operator()(std::shared_ptr<Callable> callable)
+    {
+        return *callable;
     }
 };
 
