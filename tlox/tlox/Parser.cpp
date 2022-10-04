@@ -12,7 +12,7 @@ std::vector<std::unique_ptr<Stmt>> Parser::parse()
 {
     std::vector<std::unique_ptr<Stmt>> statements{};
     while (!isAtEnd())
-        statements.push_back(declaration());
+        statements.push_back(declaration(false));
     
     return statements;
 }
@@ -222,7 +222,7 @@ void Parser::synchronize()
      }
 }
 
-std::unique_ptr<Stmt> Parser::statement()
+std::unique_ptr<Stmt> Parser::statement(bool breakable)
 {
     // NOTE parse errors are not caught so crash the program for now.
     
@@ -236,7 +236,8 @@ std::unique_ptr<Stmt> Parser::statement()
         return whileStatement();
     if(match({TokenType::LEFT_BRACE}))
         return std::make_unique<Block>(blockStatements());
-    
+    if(breakable and match({TokenType::BREAK}))
+        return breakStatement();
     return expressionStatement();
         
 }
@@ -248,12 +249,20 @@ std::vector<std::shared_ptr<Stmt>> Parser::blockStatements()
     std::vector<std::shared_ptr<Stmt> > statements;
 
      while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
-       statements.emplace_back(declaration());
+       statements.emplace_back(declaration(true));
      }
 
      consume(TokenType::RIGHT_BRACE, "Expect '}' after block.");
      return statements;
 }
+
+
+std::unique_ptr<Stmt> Parser::breakStatement()
+{
+    consume(TokenType::SEMICOLON, "Expected ';' after break statement");
+    return std::make_unique<Break>();
+}
+
 
 std::unique_ptr<Stmt> Parser::printStatement()
 {
@@ -272,13 +281,13 @@ std::unique_ptr<Stmt> Parser::expressionStatement()
         
 }
 
-std::unique_ptr<Stmt> Parser::declaration()
+std::unique_ptr<Stmt> Parser::declaration(bool breakable)
 {
     try
     {
         if(match({TokenType::VAR}))
             return varDeclaration();
-        return statement();
+        return statement(breakable);
     
     }
     catch (ParseError error)
@@ -307,10 +316,10 @@ std::unique_ptr<Stmt> Parser::ifStatement()
     std::shared_ptr<Expr> condition = expression();
     consume(TokenType::RIGHT_PAREN, "Expect ')' after if condition.");
 
-    std::unique_ptr<Stmt> thenBranch = statement();
+    std::unique_ptr<Stmt> thenBranch = statement(true);
     std::unique_ptr<Stmt> elseBranch;  // null
     if (match({TokenType::ELSE})) {
-          elseBranch = statement();
+          elseBranch = statement(true);
         }
 
     return std::make_unique<If>(condition, std::move(thenBranch), std::move(elseBranch));
@@ -322,7 +331,7 @@ std::unique_ptr<Stmt> Parser::whileStatement()
     consume(TokenType::LEFT_PAREN, "Expect '(' after 'while'.");
     auto condition = expression();
     consume(TokenType::RIGHT_PAREN, "Expect ')' after condition.");
-    auto body = statement();
+    auto body = statement(true);
 
     return std::make_unique<While>(condition, std::move(body));
 }
@@ -360,7 +369,7 @@ std::unique_ptr<Stmt> Parser::forStatement()
     consume(TokenType::RIGHT_PAREN, "Expect ')' after for clauses.");
     
     // Body:
-    auto body = statement();
+    auto body = statement(true);
     if (increment)
     {
         std::vector<std::shared_ptr<Stmt> > parts;

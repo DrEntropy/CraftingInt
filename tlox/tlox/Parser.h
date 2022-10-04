@@ -36,13 +36,13 @@ private:
     std::shared_ptr<Expr> unary();
     std::shared_ptr<Expr> primary();
     
-    std::unique_ptr<Stmt> declaration();
+    std::unique_ptr<Stmt> declaration(bool breakable);
     std::unique_ptr<Stmt> varDeclaration();
     std::unique_ptr<Stmt> ifStatement();
     std::unique_ptr<Stmt> whileStatement();
-    std::unique_Ptr<Stmt> breakStatement();
+    std::unique_ptr<Stmt> breakStatement();
     std::unique_ptr<Stmt> forStatement();
-    std::unique_ptr<Stmt> statement();
+    std::unique_ptr<Stmt> statement(bool breakable);
     std::unique_ptr<Stmt> expressionStatement();
     std::unique_ptr<Stmt> printStatement();
     

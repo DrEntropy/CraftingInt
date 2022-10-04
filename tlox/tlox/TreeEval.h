@@ -36,6 +36,7 @@ public:
     void visit(Var& el);
     void visit(Variable& el);
     void visit(Block& el);
+    void visit(Break& el);
     void visit(If& el);
     void visit(Logical& el);
     void visit(While& el);

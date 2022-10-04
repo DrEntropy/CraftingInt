@@ -195,6 +195,10 @@ void TreeEval::visit(Block& el)
         value = execute(*statement, inner_env);
 }
 
+void TreeEval::visit(Break& stmt)
+{
+    // Break out of loop somehow.
+}
 
 void TreeEval::visit(If& stmt)
 {
