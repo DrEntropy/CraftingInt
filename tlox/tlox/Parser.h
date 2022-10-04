@@ -40,6 +40,7 @@ private:
     std::unique_ptr<Stmt> varDeclaration();
     std::unique_ptr<Stmt> ifStatement();
     std::unique_ptr<Stmt> whileStatement();
+    std::unique_Ptr<Stmt> breakStatement();
     std::unique_ptr<Stmt> forStatement();
     std::unique_ptr<Stmt> statement();
     std::unique_ptr<Stmt> expressionStatement();

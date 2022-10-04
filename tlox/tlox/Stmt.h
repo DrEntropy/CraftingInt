@@ -7,6 +7,7 @@
 
 
 class Block;
+class Break;
 class ExprStmt;
 class If;
 class Print;
@@ -20,6 +21,7 @@ public:
     {
     public:
         virtual void visit(Block& el)=0;
+        virtual void visit(Break& el)=0;
         virtual void visit(ExprStmt& el)=0;
         virtual void visit(If& el)=0;
         virtual void visit(Print& el)=0;
@@ -41,6 +43,18 @@ public:
     }
 
     std::vector<std::shared_ptr<Stmt>> statements;
+
+};
+
+class Break : public Stmt
+{
+public:
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
 
 };
 

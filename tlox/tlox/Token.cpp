@@ -28,7 +28,7 @@ std::map<TokenType, std::string> tokenStrings = {
     {TokenType::RETURN, "RETURN"}, {TokenType::SUPER, "SUPER"},
     {TokenType::THIS, "THIS"}, {TokenType::TRUE_T, "TRUE_T"},
     {TokenType::VAR, "VAR"}, {TokenType::WHILE, "WHILE"},
-    {TokenType::EOF_T, "EOF_T"}
+    {TokenType::EOF_T, "EOF_T"}, {TokenType::BREAK, "BREAK"}
 };
 
 
@@ -50,5 +50,6 @@ std::map<std::string, TokenType> keywords = {
     {"this",   TokenType::THIS},
     {"true",   TokenType::TRUE_T},
     {"var",    TokenType::VAR},
-    {"while",  TokenType::WHILE}
+    {"while",  TokenType::WHILE},
+    {"break",  TokenType::BREAK}
 };

@@ -34,6 +34,8 @@ def processField(field):
 
 
 def genConstructor(className, fields):
+    if fields == []:  #No fields, so use default constructor.
+        return ''
     assignments = ', '.join([field[2] for field in fields]) # grab initializers
     fieldlist = ', '.join([field[0]+" "+field[1] for field in fields]) # grab types
     return indent4 + f"{className}({fieldlist}):" + assignments + "{}\n"
@@ -46,7 +48,10 @@ def genFields(fields):
     return res
 
 def defineType(baseName,className, fieldlist):
-    fields = [processField(f.strip()) for f in fieldlist.split(',')]
+    if fieldlist == '':
+        fields = []
+    else:
+        fields = [processField(f.strip()) for f in fieldlist.split(',')]
     # is a list of (type, name, initializer)
     boilerplate = f"\nclass {className} : public {baseName}\n" + "{\npublic:\n" + genConstructor(className,fields) +  visitString 
     return boilerplate + "\n"+ genFields(fields) + "\n};\n"
@@ -93,6 +98,7 @@ defineAst(args.dest, "Expr", ["Assign   : Token name, Expr* value",
 
 
 defineAst(args.dest, "Stmt", ["Block      : List<Stmt> statements",
+                              "Break      :",
                               "ExprStmt : Expr* expression", 
                               "If      : Expr* condition, Stmt* thenBranch, Stmt* elseBranch",
                               "Print      : Expr* expression", 
