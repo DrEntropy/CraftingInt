@@ -238,13 +238,12 @@ void TreeEval::visit(Block& el)
     // create a new environment
     std::shared_ptr<Environment> inner_env = std::make_shared<Environment>();
     inner_env->enclosing = environment;
-    std::pair<Value, bool> evalue;
+ 
     
     for (auto& statement : el.statements)
     {
-        evalue = execute(*statement, inner_env);
-        value = evalue.first;
-        broke = evalue.second;
+        std::tie(value, broke) = execute(*statement, inner_env);
+ 
         if(broke)
             break;
     }
