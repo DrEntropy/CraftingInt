@@ -48,6 +48,7 @@ public:
     }
     
     Value value;
+    bool broke{false}; // used to signfify a break statement was hit
     
 private:
     std::shared_ptr<Environment> environment;

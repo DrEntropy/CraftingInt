@@ -16,23 +16,23 @@ Value evaluate(Expr& expr, std::shared_ptr<Environment> env)
 }
 
 
-Value execute(Stmt& stmt, std::shared_ptr<Environment> env)
+std::pair<Value,bool> execute(Stmt& stmt, std::shared_ptr<Environment> env)
 {
     TreeEval visitor(env);
     stmt.accept(visitor);
-    return visitor.value;
+    return {visitor.value, visitor.broke};
 }
 
 Value interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun, std::shared_ptr<Environment> env)
 {
-    Value value;
+    std::pair<Value, bool> evalue;
     try {
         for(auto& statement : statements)
         {
             if(statement)
-               value = execute(*statement,env);
+               evalue = execute(*statement,env);
         }
-        return value;
+        return evalue.first;
     } catch (const RunTimeError& err) {
         error_fun(err);
         return Value{};
@@ -185,20 +185,7 @@ void TreeEval::visit(Assign& el)
     environment->assign(el.name, value);
 }
 
-void TreeEval::visit(Block& el)
-{
-    // create a new environment
-    std::shared_ptr<Environment> inner_env = std::make_shared<Environment>();
-    inner_env->enclosing = environment;
-    
-    for (auto& statement : el.statements)
-        value = execute(*statement, inner_env);
-}
 
-void TreeEval::visit(Break& stmt)
-{
-    // Break out of loop somehow.
-}
 
 void TreeEval::visit(If& stmt)
 {
@@ -235,8 +222,35 @@ void TreeEval::visit(Logical& expr)
 
 void TreeEval::visit(While& stmt)
 {
+    std::pair<Value,bool> evalue;
+    
     while (isTruthy(evaluate(*stmt.condition, environment))) {
-         execute(*stmt.body, environment);
+         evalue = execute(*stmt.body, environment);
+         if(evalue.second)
+             break;
        }
  
+}
+
+
+void TreeEval::visit(Block& el)
+{
+    // create a new environment
+    std::shared_ptr<Environment> inner_env = std::make_shared<Environment>();
+    inner_env->enclosing = environment;
+    std::pair<Value, bool> evalue;
+    
+    for (auto& statement : el.statements)
+    {
+        evalue = execute(*statement, inner_env);
+        value = evalue.first;
+        broke = evalue.second;
+        if(broke)
+            break;
+    }
+}
+
+void TreeEval::visit(Break& stmt)
+{
+    broke = true;
 }

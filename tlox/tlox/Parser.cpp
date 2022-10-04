@@ -229,13 +229,13 @@ std::unique_ptr<Stmt> Parser::statement(bool breakable)
     if(match({TokenType::FOR}))
         return forStatement();
     if(match({TokenType::IF}))
-        return ifStatement();
+        return ifStatement(breakable);
     if(match({TokenType::PRINT}))
         return printStatement();
     if(match({TokenType::WHILE}))
         return whileStatement();
     if(match({TokenType::LEFT_BRACE}))
-        return std::make_unique<Block>(blockStatements());
+        return std::make_unique<Block>(blockStatements(breakable));
     if(breakable and match({TokenType::BREAK}))
         return breakStatement();
     return expressionStatement();
@@ -244,12 +244,12 @@ std::unique_ptr<Stmt> Parser::statement(bool breakable)
 
 
 // Note that using shared_ptr here is a crutch to avoid complicating my AST generating code.
-std::vector<std::shared_ptr<Stmt>> Parser::blockStatements()
+std::vector<std::shared_ptr<Stmt>> Parser::blockStatements(bool breakable)
 {
     std::vector<std::shared_ptr<Stmt> > statements;
 
      while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
-       statements.emplace_back(declaration(true));
+       statements.emplace_back(declaration(breakable));
      }
 
      consume(TokenType::RIGHT_BRACE, "Expect '}' after block.");
@@ -310,16 +310,16 @@ std::unique_ptr<Stmt> Parser::varDeclaration()
     return std::make_unique<Var> (name, initializer);
 }
 
-std::unique_ptr<Stmt> Parser::ifStatement()
+std::unique_ptr<Stmt> Parser::ifStatement(bool breakable)
 {
     consume(TokenType::LEFT_PAREN, "Expect '(' after 'if'.");
     std::shared_ptr<Expr> condition = expression();
     consume(TokenType::RIGHT_PAREN, "Expect ')' after if condition.");
 
-    std::unique_ptr<Stmt> thenBranch = statement(true);
+    std::unique_ptr<Stmt> thenBranch = statement(breakable);
     std::unique_ptr<Stmt> elseBranch;  // null
     if (match({TokenType::ELSE})) {
-          elseBranch = statement(true);
+          elseBranch = statement(breakable);
         }
 
     return std::make_unique<If>(condition, std::move(thenBranch), std::move(elseBranch));

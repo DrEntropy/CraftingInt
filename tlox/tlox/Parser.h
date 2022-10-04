@@ -38,7 +38,7 @@ private:
     
     std::unique_ptr<Stmt> declaration(bool breakable);
     std::unique_ptr<Stmt> varDeclaration();
-    std::unique_ptr<Stmt> ifStatement();
+    std::unique_ptr<Stmt> ifStatement(bool breakable);
     std::unique_ptr<Stmt> whileStatement();
     std::unique_ptr<Stmt> breakStatement();
     std::unique_ptr<Stmt> forStatement();
@@ -46,7 +46,7 @@ private:
     std::unique_ptr<Stmt> expressionStatement();
     std::unique_ptr<Stmt> printStatement();
     
-    std::vector<std::shared_ptr<Stmt>> blockStatements();
+    std::vector<std::shared_ptr<Stmt>> blockStatements(bool breakable);
     
     bool match(std::initializer_list<TokenType>);
     bool check(TokenType);
