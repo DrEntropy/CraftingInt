@@ -190,9 +190,9 @@ void TreeEval::visit(Assign& el)
 void TreeEval::visit(If& stmt)
 {
     if (isTruthy(evaluate(*stmt.condition, environment))) {
-        execute(*stmt.thenBranch, environment);
+        std::tie(value, broke) = execute(*stmt.thenBranch, environment);
       } else if (stmt.elseBranch) {
-        execute(*stmt.elseBranch,environment);
+        std::tie(value, broke) = execute(*stmt.elseBranch,environment);
       }
 }
 
