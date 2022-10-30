@@ -89,6 +89,7 @@ args = parser.parse_args()
 
 defineAst(args.dest, "Expr", ["Assign   : Token name, Expr* value",
                               "Binary : Expr* left, Token op, Expr* right",
+                              "Call : Expr* callee, Token paren, List<Expr> arguments",
                               "Grouping : Expr* expression",
                               "Literal  : Value value",
                               "Logical  : Expr* left,Token op, Expr* right",

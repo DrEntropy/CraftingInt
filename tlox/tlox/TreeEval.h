@@ -11,7 +11,7 @@
 #include "Expr.h"
 #include "Stmt.h"
 #include "Token.h"
-#include "Value.h"
+#include "ValueHelpers.h"
 #include "Environment.h"
 #include "RuntimeError.h"
 #include <string>
@@ -28,6 +28,7 @@ public:
     
     void visit(Assign& el);
     void visit(Binary& el);
+    void visit(Call& el);
     void visit(Grouping& el);
     void visit(Literal& el);
     void visit(Unary& el);

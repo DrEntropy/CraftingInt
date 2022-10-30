@@ -26,6 +26,8 @@ public:
 private:
     
     std::shared_ptr<Expr> expression();
+    std::shared_ptr<Expr> call();
+    std::shared_ptr<Expr> finishCall(std::shared_ptr<Expr>);
     std::shared_ptr<Expr> assignment();
     std::shared_ptr<Expr> orExpression();
     std::shared_ptr<Expr> andExpression();

@@ -8,6 +8,8 @@
 #include "TreeEval.h"
 #include<iostream>
 
+#include "Callable.h"
+
 Value evaluate(Expr& expr, std::shared_ptr<Environment> env)
 {
     TreeEval visitor(env);
@@ -116,6 +118,34 @@ void TreeEval::visit(Binary& el)
             
     }
      
+}
+
+void TreeEval::visit(Call& expr)
+{
+    Value callee = evaluate(*(expr.callee), environment);
+    
+    std::vector<Value> arguments;
+    
+    for(auto argument : expr.arguments)
+    {
+        arguments.push_back(evaluate(*argument, environment));
+    }
+    
+    // Makes sure the value is a callable and then call it. 
+    if(std::holds_alternative<std::shared_ptr<Callable> >(callee))
+    {
+        auto function = std::get<std::shared_ptr<Callable>>(callee);
+        
+        if(arguments.size() != function->arity())
+            throw RunTimeError(expr.paren,"Expected " + std::to_string(function->arity()) +
+                               " arguments but got " +
+                               std::to_string(arguments.size()) + ".");
+        
+        function->call(*this, arguments);
+    }
+    else
+        throw RunTimeError(expr.paren,"Non callable in call expression");
+    
 }
 
 void TreeEval::visit(Grouping& el)

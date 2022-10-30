@@ -8,6 +8,7 @@
 
 class Assign;
 class Binary;
+class Call;
 class Grouping;
 class Literal;
 class Logical;
@@ -22,6 +23,7 @@ public:
     public:
         virtual void visit(Assign& el)=0;
         virtual void visit(Binary& el)=0;
+        virtual void visit(Call& el)=0;
         virtual void visit(Grouping& el)=0;
         virtual void visit(Literal& el)=0;
         virtual void visit(Logical& el)=0;
@@ -60,6 +62,22 @@ public:
     std::shared_ptr<Expr> left;
     Token op;
     std::shared_ptr<Expr> right;
+
+};
+
+class Call : public Expr
+{
+public:
+    Call(std::shared_ptr<Expr> callee, Token paren, std::vector<std::shared_ptr<Expr>> arguments):callee{callee}, paren{paren}, arguments{arguments}{}
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
+    std::shared_ptr<Expr> callee;
+    Token paren;
+    std::vector<std::shared_ptr<Expr>> arguments;
 
 };
 

@@ -27,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		7012E4C628AC55AB005D3439 /* Expr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Expr.h; sourceTree = "<group>"; };
+		7012F2AA290F29420043B3E0 /* ValueHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValueHelpers.h; sourceTree = "<group>"; };
 		702DB83528C587CB00D46E09 /* Environment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Environment.h; sourceTree = "<group>"; };
 		702DB83628C589F600D46E09 /* RuntimeError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RuntimeError.h; sourceTree = "<group>"; };
 		70319A2928838AFF009CB227 /* tlox */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlox; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,6 +85,7 @@
 				7039004F28B97F0200AAEFFC /* TreeEval.cpp */,
 				7039005028B97F0200AAEFFC /* TreeEval.h */,
 				7095418028BA8CF800AFC6EB /* Value.h */,
+				7012F2AA290F29420043B3E0 /* ValueHelpers.h */,
 				702DB83528C587CB00D46E09 /* Environment.h */,
 				702DB83628C589F600D46E09 /* RuntimeError.h */,
 				7091B7C528DE5DEE00C10F60 /* Callable.h */,
