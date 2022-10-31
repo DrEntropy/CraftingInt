@@ -15,7 +15,7 @@
 //#include "AstPrint.h"
 #include "Parser.h"
 #include "TreeEval.h"
-
+#include "Natives.h"
 
 // All of this crap should be in an error reporting class
 
@@ -79,7 +79,7 @@ void runFile(std::string filename)
     std::ifstream t(filename);
     if(t.is_open())
     {
-        auto env{std::make_shared<Environment>()};
+        auto env = make_global_enviroment();
         std::stringstream buffer;
         buffer << t.rdbuf();
         run(buffer.str(), env);
@@ -100,7 +100,7 @@ void runPrompt()
 {
     std::cout << "Running Interpreter \n";
     std::string line;
-    auto env{std::make_shared<Environment>()};
+    auto env = make_global_enviroment();
     while(true)
     {
         std::getline(std::cin,line);

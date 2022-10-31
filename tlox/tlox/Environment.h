@@ -17,7 +17,12 @@
 #include "RuntimeError.h"
 
 struct Environment {
-    std::weak_ptr<Environment> enclosing{};
+    
+    Environment() : enclosing{}{}
+
+    Environment(std::shared_ptr<Environment> enclosing) : enclosing{enclosing}{}
+    
+    std::shared_ptr<Environment> enclosing;
     
     std::unordered_map<std::string, Value> values;
     
@@ -31,8 +36,8 @@ struct Environment {
         try {
             return values.at(name.lexeme);
         } catch (const std::out_of_range& e) {
-            if(std::shared_ptr<Environment> env = enclosing.lock())
-                return env->get(name);
+            if(enclosing)
+                return enclosing->get(name);
             
             throw RunTimeError(name, "Undefined Variable: " + name.lexeme + ".");
         }
@@ -43,9 +48,9 @@ struct Environment {
             values.at(name.lexeme) = value;
         } catch (const std::out_of_range& e) {
         
-        if(std::shared_ptr<Environment> env = enclosing.lock())
+        if(enclosing)
         {
-            env->assign(name, value);
+            enclosing->assign(name, value);
             return;
         }
         

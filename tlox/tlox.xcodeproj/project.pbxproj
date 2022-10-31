@@ -10,6 +10,7 @@
 		70319A2D28838AFF009CB227 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 70319A2C28838AFF009CB227 /* main.cpp */; };
 		7039005128B97F0200AAEFFC /* TreeEval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7039004F28B97F0200AAEFFC /* TreeEval.cpp */; };
 		70C784A928B6C94200117F6E /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 70C784A728B6C94200117F6E /* Parser.cpp */; };
+		70ED3207291023DF00ECA548 /* Natives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 70ED3205291023DF00ECA548 /* Natives.cpp */; };
 		70FABCC228AD776800CD5CC5 /* Token.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 70FABCC128AD776800CD5CC5 /* Token.cpp */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,8 @@
 		70C784AA28B6D8D200117F6E /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		70D73404288F407800725BFD /* Scanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
 		70D73405288F410B00725BFD /* Token.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Token.h; sourceTree = "<group>"; };
+		70ED3205291023DF00ECA548 /* Natives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Natives.cpp; sourceTree = "<group>"; };
+		70ED3206291023DF00ECA548 /* Natives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Natives.h; sourceTree = "<group>"; };
 		70FABCC128AD776800CD5CC5 /* Token.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Token.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,6 +77,8 @@
 		70319A2B28838AFF009CB227 /* tlox */ = {
 			isa = PBXGroup;
 			children = (
+				70ED3205291023DF00ECA548 /* Natives.cpp */,
+				70ED3206291023DF00ECA548 /* Natives.h */,
 				70C22CED28C51C6B00AF622A /* Stmt.h */,
 				70C784AA28B6D8D200117F6E /* Parser.h */,
 				70319A2C28838AFF009CB227 /* main.cpp */,
@@ -151,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				70C784A928B6C94200117F6E /* Parser.cpp in Sources */,
+				70ED3207291023DF00ECA548 /* Natives.cpp in Sources */,
 				70FABCC228AD776800CD5CC5 /* Token.cpp in Sources */,
 				70319A2D28838AFF009CB227 /* main.cpp in Sources */,
 				7039005128B97F0200AAEFFC /* TreeEval.cpp in Sources */,
