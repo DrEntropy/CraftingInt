@@ -11,6 +11,7 @@
 #include "Callable.h"
 #include "Parser.h"
 #include "TreeEval.h"
+#include "ReturnExcept.h"
 
 struct LoxFunction : Callable
 {
@@ -24,9 +25,16 @@ struct LoxFunction : Callable
             env->define(declaration.params[i].lexeme, arguments[i]);
         }
         
-        auto [res, flag] = executeBlock(declaration.body, env);
+        // this uses the exception mechanism to implement returns.
+        try {
+             auto [res, flag] = executeBlock(declaration.body, env);
+             return res;
+        } catch (ReturnExcept returnValue)
+        {
+            return returnValue.value;
+        }
         
-        return res;
+        
     }
     
     int arity() override {

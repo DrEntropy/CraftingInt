@@ -10,6 +10,7 @@
 
 #include "Callable.h"
 #include "LoxFunction.h"
+#include "ReturnExcept.h"
 
 Value evaluate(Expr& expr, std::shared_ptr<Environment> env)
 {
@@ -141,7 +142,7 @@ void TreeEval::visit(Call& expr)
                                " arguments but got " +
                                std::to_string(arguments.size()) + ".");
         
-        function->call(arguments);
+        value = function->call(arguments);
     }
     else
         throw RunTimeError(expr.paren,"Non callable in call expression");
@@ -294,5 +295,9 @@ void TreeEval::visit(Break& stmt)
 
 void TreeEval::visit(Return& stmt)
 {
-    // do something.
+    Value value;
+    if(stmt.value != nullptr)
+        value = evaluate(*stmt.value, environment);
+    
+    throw ReturnExcept(value);
 }
