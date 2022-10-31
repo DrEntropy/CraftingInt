@@ -290,3 +290,9 @@ void TreeEval::visit(Break& stmt)
 {
     broke = true;
 }
+
+
+void TreeEval::visit(Return& stmt)
+{
+    // do something.
+}

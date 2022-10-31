@@ -105,6 +105,7 @@ defineAst(args.dest, "Stmt", ["Block      : List<Stmt> statements",
                               "ExprStmt : Expr* expression", 
                               "Function : Token name, Vect<Token> params, List<Stmt> body",
                               "If      : Expr* condition, Stmt* thenBranch, Stmt* elseBranch",
-                              "Print      : Expr* expression", 
+                              "Print      : Expr* expression",
+                              "Return   : Token keyword, Expr* value",
                               "While : Expr* condition, Stmt* body",
                               "Var      : Token name, Expr* expression"])

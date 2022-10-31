@@ -262,6 +262,8 @@ std::unique_ptr<Stmt> Parser::statement(bool breakable)
         return ifStatement(breakable);
     if(match({TokenType::PRINT}))
         return printStatement();
+    if(match({TokenType::RETURN}))
+        return returnStatement();
     if(match({TokenType::WHILE}))
         return whileStatement();
     if(match({TokenType::LEFT_BRACE}))
@@ -293,6 +295,17 @@ std::unique_ptr<Stmt> Parser::breakStatement()
     return std::make_unique<Break>();
 }
 
+std::unique_ptr<Stmt> Parser::returnStatement()
+{
+    Token keyword = previous();
+    std::shared_ptr<Expr> value;
+    if(!check(TokenType::SEMICOLON))
+    {
+        value = expression();
+    }
+    consume(TokenType::SEMICOLON, "Expect ';' after return value.");
+    return std::make_unique<Return>(keyword, value);
+}
 
 std::unique_ptr<Stmt> Parser::printStatement()
 {

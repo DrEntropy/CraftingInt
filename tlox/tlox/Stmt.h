@@ -12,6 +12,7 @@ class ExprStmt;
 class Function;
 class If;
 class Print;
+class Return;
 class While;
 class Var;
 class Stmt
@@ -27,6 +28,7 @@ public:
         virtual void visit(Function& el)=0;
         virtual void visit(If& el)=0;
         virtual void visit(Print& el)=0;
+        virtual void visit(Return& el)=0;
         virtual void visit(While& el)=0;
         virtual void visit(Var& el)=0;
     };
@@ -117,6 +119,21 @@ public:
     }
 
     std::shared_ptr<Expr> expression;
+
+};
+
+class Return : public Stmt
+{
+public:
+    Return(Token keyword, std::shared_ptr<Expr> value):keyword{keyword}, value{value}{}
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
+    Token keyword;
+    std::shared_ptr<Expr> value;
 
 };
 

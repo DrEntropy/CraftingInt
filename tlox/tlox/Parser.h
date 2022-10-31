@@ -49,6 +49,7 @@ private:
     std::unique_ptr<Stmt> statement(bool breakable);
     std::unique_ptr<Stmt> expressionStatement();
     std::unique_ptr<Stmt> printStatement();
+    std::unique_ptr<Stmt> returnStatement();
     
     std::vector<std::shared_ptr<Stmt>> blockStatements(bool breakable);
     
