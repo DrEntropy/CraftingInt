@@ -19,6 +19,22 @@
 
 Value evaluate(Expr& expr, Environment& env);
 
+std::pair<Value,bool> execute(Stmt& stmt, std::shared_ptr<Environment> env);
+
+
+template <typename StatementPtr>
+std::pair<Value,bool> executeBlock(std::vector<StatementPtr>& block, std::shared_ptr<Environment> env)
+{
+    std::pair<Value, bool> evalue;
+    for(auto& statement : block)
+    {
+        if(statement)
+           evalue = execute(*statement,env);
+    }
+    // return only last one.
+    return evalue;
+}
+
 Value interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun, std::shared_ptr<Environment> env);
 
 class TreeEval : public Expr::Visitor, public Stmt::Visitor
@@ -29,6 +45,7 @@ public:
     void visit(Assign& el);
     void visit(Binary& el);
     void visit(Call& el);
+    void visit(Function& function);
     void visit(Grouping& el);
     void visit(Literal& el);
     void visit(Unary& el);

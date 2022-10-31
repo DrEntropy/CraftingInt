@@ -37,6 +37,7 @@
 		7039005028B97F0200AAEFFC /* TreeEval.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TreeEval.h; sourceTree = "<group>"; };
 		7091B7C528DE5DEE00C10F60 /* Callable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Callable.h; sourceTree = "<group>"; };
 		7095418028BA8CF800AFC6EB /* Value.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Value.h; sourceTree = "<group>"; };
+		70A5700D2910593300C4EE78 /* LoxFunction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoxFunction.h; sourceTree = "<group>"; };
 		70C22CED28C51C6B00AF622A /* Stmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stmt.h; sourceTree = "<group>"; };
 		70C784A728B6C94200117F6E /* Parser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Parser.cpp; sourceTree = "<group>"; };
 		70C784AA28B6D8D200117F6E /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
@@ -81,12 +82,12 @@
 				70ED3206291023DF00ECA548 /* Natives.h */,
 				70C22CED28C51C6B00AF622A /* Stmt.h */,
 				70C784AA28B6D8D200117F6E /* Parser.h */,
+				70C784A728B6C94200117F6E /* Parser.cpp */,
 				70319A2C28838AFF009CB227 /* main.cpp */,
 				70D73404288F407800725BFD /* Scanner.h */,
 				70D73405288F410B00725BFD /* Token.h */,
 				70FABCC128AD776800CD5CC5 /* Token.cpp */,
 				7012E4C628AC55AB005D3439 /* Expr.h */,
-				70C784A728B6C94200117F6E /* Parser.cpp */,
 				7039004F28B97F0200AAEFFC /* TreeEval.cpp */,
 				7039005028B97F0200AAEFFC /* TreeEval.h */,
 				7095418028BA8CF800AFC6EB /* Value.h */,
@@ -94,6 +95,7 @@
 				702DB83528C587CB00D46E09 /* Environment.h */,
 				702DB83628C589F600D46E09 /* RuntimeError.h */,
 				7091B7C528DE5DEE00C10F60 /* Callable.h */,
+				70A5700D2910593300C4EE78 /* LoxFunction.h */,
 			);
 			path = tlox;
 			sourceTree = "<group>";

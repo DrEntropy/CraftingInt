@@ -9,6 +9,7 @@
 #include<iostream>
 
 #include "Callable.h"
+#include "LoxFunction.h"
 
 Value evaluate(Expr& expr, std::shared_ptr<Environment> env)
 {
@@ -25,15 +26,14 @@ std::pair<Value,bool> execute(Stmt& stmt, std::shared_ptr<Environment> env)
     return {visitor.value, visitor.broke};
 }
 
+
+
+
 Value interpret(std::vector<std::unique_ptr<Stmt>>& statements, std::function<void(RunTimeError)> error_fun, std::shared_ptr<Environment> env)
 {
     std::pair<Value, bool> evalue;
     try {
-        for(auto& statement : statements)
-        {
-            if(statement)
-               evalue = execute(*statement,env);
-        }
+        evalue = executeBlock(statements, env);
         return evalue.first;
     } catch (const RunTimeError& err) {
         error_fun(err);
@@ -141,7 +141,7 @@ void TreeEval::visit(Call& expr)
                                " arguments but got " +
                                std::to_string(arguments.size()) + ".");
         
-        function->call(*this, arguments);
+        function->call(arguments);
     }
     else
         throw RunTimeError(expr.paren,"Non callable in call expression");
@@ -184,6 +184,13 @@ void TreeEval::visit(ExprStmt& el)
 {
     value = evaluate(*el.expression, environment);
     // save return value for REPL
+}
+
+void TreeEval::visit(Function& functiondecl)
+{
+    Value fun = std::make_shared<LoxFunction>(functiondecl,  environment);
+    // value not used
+    environment->define(functiondecl.name.lexeme, fun);
 }
     
 void TreeEval::visit(Print& el)

@@ -6,7 +6,6 @@
 //
 
 #include "Natives.h"
-#include "TreeEval.h"
 #include <chrono>
 
 
@@ -22,7 +21,7 @@ std::shared_ptr<Environment> make_global_enviroment()
         int arity() override {return 0;}
         operator std::string()  override { return "<native fn>";}
         
-        virtual Value call(TreeEval evaluator, std::vector<Value> arguments) override
+        virtual Value call(std::vector<Value> arguments) override
         {
             // This seems overly complicated, typical c++
             using namespace std::chrono;

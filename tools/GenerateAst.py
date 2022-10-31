@@ -29,6 +29,8 @@ def processField(field):
         type = f"std::shared_ptr<{type[:-1]}>"
     if type[:4] == "List":
         type = f"std::vector<std::shared_ptr<{type[5:-1]}>>"
+    if type[:4] == "Vect":
+        type = f"std::vector<{type[5:-1]}>"
     initializer = f"{name}{{{name}}}"
     return (type, name, initializer)
 
@@ -101,6 +103,7 @@ defineAst(args.dest, "Expr", ["Assign   : Token name, Expr* value",
 defineAst(args.dest, "Stmt", ["Block      : List<Stmt> statements",
                               "Break      :",
                               "ExprStmt : Expr* expression", 
+                              "Function : Token name, Vect<Token> params, List<Stmt> body",
                               "If      : Expr* condition, Stmt* thenBranch, Stmt* elseBranch",
                               "Print      : Expr* expression", 
                               "While : Expr* condition, Stmt* body",

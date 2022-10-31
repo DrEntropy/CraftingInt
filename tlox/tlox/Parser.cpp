@@ -315,6 +315,8 @@ std::unique_ptr<Stmt> Parser::declaration(bool breakable)
 {
     try
     {
+        if(match({TokenType::FUN}))
+            return function("function");
         if(match({TokenType::VAR}))
             return varDeclaration();
         return statement(breakable);
@@ -325,6 +327,35 @@ std::unique_ptr<Stmt> Parser::declaration(bool breakable)
           //synchronize();
           return nullptr;
     }
+}
+
+std::unique_ptr<Stmt> Parser::function(std::string kind)
+{
+    Token name = consume(TokenType::IDENTIFIER, "Expect "+ kind+ " name.");
+    consume(TokenType::LEFT_PAREN, "Expect '(' after " + kind +" name.");
+    std::vector<Token> parameters{};
+    if(!check(TokenType::RIGHT_PAREN))
+    {
+        do
+        {
+            if(parameters.size() >= 255)
+            {
+                error(peek(), "Can't have more then 255 parameters.");
+            }
+            parameters.push_back(consume(TokenType::IDENTIFIER ,"Expect parameter name."));
+            
+        } while(match({TokenType::COMMA}));
+    }
+    consume(TokenType::RIGHT_PAREN, "Expect ')' after parameters.");
+    
+    //parse body
+    
+    consume(TokenType::LEFT_BRACE, "expect '{' before "+ kind + " body.");
+    auto body = blockStatements(false);
+    
+    return std::make_unique<Function>(name, parameters, body);
+    // Now build function node for AST
+    
 }
 
 std::unique_ptr<Stmt> Parser::varDeclaration()

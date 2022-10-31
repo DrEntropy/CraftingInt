@@ -64,7 +64,7 @@ Value run(std::string source, std::shared_ptr<Environment> env)
    //   std::cout << token.toString() << "\n";
    // }
     std::vector< std::unique_ptr<Stmt> > statements = parser.parse();
-    //AstPrint printer;
+     
  
     return interpret(statements, runtime_error,env);
     

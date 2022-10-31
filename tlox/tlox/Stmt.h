@@ -9,6 +9,7 @@
 class Block;
 class Break;
 class ExprStmt;
+class Function;
 class If;
 class Print;
 class While;
@@ -23,6 +24,7 @@ public:
         virtual void visit(Block& el)=0;
         virtual void visit(Break& el)=0;
         virtual void visit(ExprStmt& el)=0;
+        virtual void visit(Function& el)=0;
         virtual void visit(If& el)=0;
         virtual void visit(Print& el)=0;
         virtual void visit(While& el)=0;
@@ -69,6 +71,22 @@ public:
     }
 
     std::shared_ptr<Expr> expression;
+
+};
+
+class Function : public Stmt
+{
+public:
+    Function(Token name, std::vector<Token> params, std::vector<std::shared_ptr<Stmt>> body):name{name}, params{params}, body{body}{}
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
+    Token name;
+    std::vector<Token> params;
+    std::vector<std::shared_ptr<Stmt>> body;
 
 };
 

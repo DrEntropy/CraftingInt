@@ -28,6 +28,7 @@ private:
     std::shared_ptr<Expr> expression();
     std::shared_ptr<Expr> call();
     std::shared_ptr<Expr> finishCall(std::shared_ptr<Expr>);
+
     std::shared_ptr<Expr> assignment();
     std::shared_ptr<Expr> orExpression();
     std::shared_ptr<Expr> andExpression();
@@ -40,6 +41,7 @@ private:
     
     std::unique_ptr<Stmt> declaration(bool breakable);
     std::unique_ptr<Stmt> varDeclaration();
+    std::unique_ptr<Stmt> function(std::string kind);
     std::unique_ptr<Stmt> ifStatement(bool breakable);
     std::unique_ptr<Stmt> whileStatement();
     std::unique_ptr<Stmt> breakStatement();
