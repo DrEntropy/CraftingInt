@@ -167,6 +167,7 @@ std::shared_ptr<Expr> Parser::call()
 
 std::shared_ptr<Expr> Parser::primary()
 {
+    if (match({TokenType::FUN})) return anonFunctionExpr();
     if (match({TokenType::FALSE_T})) return std::make_shared<Literal>(false);
     if (match({TokenType::TRUE_T})) return std::make_shared<Literal>(true);
     if (match({TokenType::NIL})) return std::make_shared<Literal>(Value()); // monostate is nil
@@ -189,6 +190,34 @@ std::shared_ptr<Expr> Parser::primary()
     }
     // doesn't match anything, thats an error.
     throw error(peek(), "Expecting Expression.");
+}
+
+std::shared_ptr<Expr> Parser::anonFunctionExpr()
+{
+    consume(TokenType::LEFT_PAREN, "Expect '(' after fun in anonymouse function.");
+    std::vector<Token> parameters{};
+    if(!check(TokenType::RIGHT_PAREN))
+    {
+        do
+        {
+            if(parameters.size() >= 255)
+            {
+                error(peek(), "Can't have more then 255 parameters.");
+            }
+            parameters.push_back(consume(TokenType::IDENTIFIER ,"Expect parameter name."));
+            
+        } while(match({TokenType::COMMA}));
+    }
+    consume(TokenType::RIGHT_PAREN, "Expect ')' after parameters.");
+    
+    //parse body
+    
+    consume(TokenType::LEFT_BRACE, "expect '{' before function body.");
+    auto body = blockStatements(false);
+    
+    return std::make_unique<AnonFunction>(parameters, body);
+    // Now build function node for AST
+    
 }
 
 

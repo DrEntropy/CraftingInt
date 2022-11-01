@@ -46,6 +46,7 @@ public:
     void visit(Binary& el);
     void visit(Call& el);
     void visit(Function& function);
+    void visit(AnonFunction& functionExpr);
     void visit(Grouping& el);
     void visit(Literal& el);
     void visit(Unary& el);

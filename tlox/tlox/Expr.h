@@ -6,10 +6,13 @@
 #include "Token.h"
 
 
+class Expr;
+class Stmt;
 class Assign;
 class Binary;
 class Call;
 class Grouping;
+class AnonFunction;
 class Literal;
 class Logical;
 class Unary;
@@ -25,6 +28,7 @@ public:
         virtual void visit(Binary& el)=0;
         virtual void visit(Call& el)=0;
         virtual void visit(Grouping& el)=0;
+        virtual void visit(AnonFunction& el)=0;
         virtual void visit(Literal& el)=0;
         virtual void visit(Logical& el)=0;
         virtual void visit(Unary& el)=0;
@@ -92,6 +96,21 @@ public:
     }
 
     std::shared_ptr<Expr> expression;
+
+};
+
+class AnonFunction : public Expr
+{
+public:
+    AnonFunction(std::vector<Token> params, std::vector<std::shared_ptr<Stmt>> body):params{params}, body{body}{}
+
+   void accept(Visitor& v) override
+    {
+        return v.visit(*this);
+    }
+
+    std::vector<Token> params;
+    std::vector<std::shared_ptr<Stmt>> body;
 
 };
 

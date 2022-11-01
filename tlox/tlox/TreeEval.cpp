@@ -189,9 +189,15 @@ void TreeEval::visit(ExprStmt& el)
 
 void TreeEval::visit(Function& functiondecl)
 {
-    Value fun = std::make_shared<LoxFunction>(functiondecl,  environment);
+    Value fun = std::make_shared<LoxFunction>(functiondecl.name.lexeme, functiondecl.params, functiondecl.body,  environment);
     // value not used
     environment->define(functiondecl.name.lexeme, fun);
+}
+
+
+void TreeEval::visit(AnonFunction& functiondecl)
+{
+    value = std::make_shared<LoxFunction>("<ANON>", functiondecl.params,  functiondecl.body, environment);
 }
     
 void TreeEval::visit(Print& el)

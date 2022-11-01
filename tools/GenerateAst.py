@@ -18,7 +18,7 @@ def genVisitor(classDesc):
     return res
 
 def forwardDeclare(classDesc):
-    res = ""
+    res = "class Expr;\nclass Stmt;\n"
     for (className, fieldlist) in classDesc:
         res += f"class {className};\n"
     return res
@@ -93,6 +93,7 @@ defineAst(args.dest, "Expr", ["Assign   : Token name, Expr* value",
                               "Binary : Expr* left, Token op, Expr* right",
                               "Call : Expr* callee, Token paren, List<Expr> arguments",
                               "Grouping : Expr* expression",
+                              "AnonFunction : Vect<Token> params, List<Stmt> body",
                               "Literal  : Value value",
                               "Logical  : Expr* left,Token op, Expr* right",
                                "Unary   : Token op, Expr* right",

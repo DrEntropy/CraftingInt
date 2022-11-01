@@ -6,6 +6,8 @@
 #include "Token.h"
 
 
+class Expr;
+class Stmt;
 class Block;
 class Break;
 class ExprStmt;

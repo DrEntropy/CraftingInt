@@ -15,19 +15,21 @@
 
 struct LoxFunction : Callable
 {
-    LoxFunction(Function decl, std::shared_ptr<Environment> env) : declaration {decl}, closure{env}{};
+    LoxFunction(std::string name, std::vector<Token> params,
+                std::vector<std::shared_ptr<Stmt>> body, std::shared_ptr<Environment> env)
+                : name{name}, params{params},body{body}, closure{env}{};
     
     Value call(std::vector<Value> arguments)  override
     {
         auto env{std::make_shared<Environment>(closure)};
-        for (int i = 0; i < declaration.params.size(); i++)
+        for (int i = 0; i < params.size(); i++)
         {
-            env->define(declaration.params[i].lexeme, arguments[i]);
+            env->define(params[i].lexeme, arguments[i]);
         }
         
         // this uses the exception mechanism to implement returns.
         try {
-             auto [res, flag] = executeBlock(declaration.body, env);
+             auto [res, flag] = executeBlock(body, env);
              return res;
         } catch (ReturnExcept returnValue)
         {
@@ -38,18 +40,20 @@ struct LoxFunction : Callable
     }
     
     int arity() override {
-        return declaration.params.size();
+        return params.size();
     }
     
     
     operator std::string() override
     {
-        return "<fn " + declaration.name.lexeme + ">";
+        return "<fn " +  name + ">";
     }
     
                 
     // keeps (shallow) copy of the declaration
-    Function declaration;
+    std::string name;
+    std::vector< std::shared_ptr<Stmt> > body;
+    std::vector<Token> params;
     
     std::shared_ptr<Environment> closure;
 };
