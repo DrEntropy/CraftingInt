@@ -17,7 +17,7 @@ class TreeEval;
 class Callable
 {
 public:
-    virtual Value call(std::vector<Value> arguments) = 0;// to be fleshed out.
+    virtual Value call(std::vector<Value> arguments) = 0; //Callable is abstract
     
     virtual operator std::string() = 0;
     virtual int arity() = 0;

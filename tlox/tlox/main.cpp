@@ -116,7 +116,7 @@ void runPrompt()
     
 }
 
-
+// NOTE AstPrint was removed
 //void testPrint()
 //{
 //    // TEST CODE  DELETE

@@ -13,6 +13,7 @@
 #include <map>
 #include <string>
 
+// Values are evaluated expressions or literals, a varient type
 #include "ValueHelpers.h"
 
 // NOTE: TRUE , FALSE and EOF tokens are different from the book due to c++ keywords.
